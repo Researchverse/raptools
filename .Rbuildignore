@@ -1,3 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
+^\.DS_Store$
+^.*\.DS_Store$
+^\.git$
+^\.gitignore$
+^data-raw$
+^\.\.Rcheck$
+^.*\.Rapp\.history$
