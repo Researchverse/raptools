@@ -1,3 +1,17 @@
+# Global variables to avoid NSE issues with ggplot2 and dplyr
+globalVariables(c("Baseline", "New", "Event", "Model", "Probabilities", "ID", 
+                  "n_event", "n_nonevent", "n_event_cumulative", "n_nonevent_cumulative",
+                  "Sensitivity", "1-Specificity", "IDs", "ID_list", "Metric", "Metric name",
+                  "Prediction", "n_ev", "TP", "n_nonev", "TN", "FN", "FP", "spec", "treated",
+                  "untreated", "sens", "ppv", "1-spec", "x", "interval", "rn", "mid_rn",
+                  "prediction", "calib_baseline", "calib_new", "pred_interval", "prop_event",
+                  "mn_pred", "lci_prop_event", "uci_prop_event", "lci_pred", "uci_pred",
+                  "Chi-Square", "d.f.", "Xsqmindf", "variables", "Xsqmindf.percent",
+                  "prevalence", "Extreme models", "extremes", "V1", "V2", "V3", "metric",
+                  "statistics", "event", "up", "down", "n_up", "n_down", "nri",
+                  "risk.class.x2", "risk.class.x1", "difference", "IDI", "mse_x1", "mse_x2",
+                  "brier_baseline", "brier_new"))
+
 #' The Risk Assessment Plot
 #'
 #' The function ggrap() plots the Sensitivity and 1-Specificity curves against the calculated risk for the baseline (reference) and newmodels, thus graphically displaying the IDIs for those with and without the events.  These plots can aid interpretation of the NRI and IDI metrics.
@@ -10,6 +24,7 @@
 #' @import ggplot2
 #' @import tidyr 
 #' @import dplyr
+#' @importFrom stats anova glm quantile
 #' @export
 ggrap <- function(x1, x2=NULL, y=NULL) {
   
