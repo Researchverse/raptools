@@ -1,3 +1,9 @@
 .Rproj.user
 .Rhistory
 .RData
+.Ruserdata
+..Rcheck/
+*.tar.gz
+*.tgz
+.DS_Store
+*.Rapp.history
