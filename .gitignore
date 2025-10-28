@@ -7,3 +7,7 @@
 *.tgz
 .DS_Store
 *.Rapp.history
+
+# CRAN submission files
+CRAN-SUBMISSION
+cran-comments.md

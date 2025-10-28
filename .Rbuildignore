@@ -15,3 +15,5 @@
 # Other editor/project files
 ^\.Rhistory$
 ^\.Rproj\.user$
+^CRAN-SUBMISSION$
+^cran-comments\.md$

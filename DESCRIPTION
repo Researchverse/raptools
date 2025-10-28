@@ -1,8 +1,11 @@
 Package: raptools
 Title: Risk Assessment Plot and Reclassification Metrics
 Version: 1.22
-Author: John W Pickering <John.Pickering@otago.ac.nz>, Dimitrios Doudesis <dimitrios.doudesis@ed.ac.uk>
-Maintainer: Daniel Perez Vicencio <dvicencio947@gmail.com>
+Authors@R: c(
+        person("John W", "Pickering", email = "John.Pickering@otago.ac.nz", role = "aut"),
+        person("Dimitrios", "Doudesis", email = "dimitrios.doudesis@ed.ac.uk", role = "aut"),
+        person("Daniel Perez", "Vicencio", email = "dvicencio947@gmail.com", role = "cre")
+    )
 Description: Provides functions for assessing the comparative performance of two logistic regression models or results of such models or classification models. Discrimination metrics include Integrated Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Difference in AUCs, Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and Calibration plots.  
 Depends:
     R (>= 4.1.0)
