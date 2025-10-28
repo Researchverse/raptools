@@ -154,7 +154,7 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
 #' @return a ggplot 
-#' @references Vickers AJ, van Calster B, Steyerberg EW. A simple, step-by-step guide to interpreting decision curve analysis. Diagn Progn Res 2019;3(1):18. 2. Zhang Z, Rousson V, Lee W-C, et al. Decision curve analysis: a technical note. Ann Transl Med 2018;6(15):308–308. 
+#' @references Vickers AJ, van Calster B, Steyerberg EW. A simple, step-by-step guide to interpreting decision curve analysis. Diagn Progn Res 2019;3(1):18. 2. Zhang Z, Rousson V, Lee W-C, et al. Decision curve analysis: a technical note. Ann Transl Med 2018;6(15):308-308. 
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr
@@ -335,7 +335,7 @@ ggdecision <- function(x1, x2=NULL, y=NULL) {
 #' @param carrington_line The Useful Area is from the roc down to this line. It depends on prevalence and the costs of FP, FN, TP, TN.  Default is FALSE. See Carrington et al.  
 #' @param costs Numeric vectors costs = c(cFP, cFN,cTP, cTN). The costs of FP, FN, TP, TN.  Default, c(0,0,1,1), is for there to be no costs for the FP & FN and identical costs for TN and TP.  See Carrington et al.  
 #' @param label_number The number of points on the curve to label.The default has no labels.    
-#' @references  Carrington AM, Fieguth PW, Mayr F, James ND, Holzinger A, Pickering JW, et al. The ROC Diagonal is not Layperson’s Chance: a New Baseline Shows the Useful Area. Machine Learning and Knowledge Extraction. Vienna, Austria: Springer; 2022. pp. 100–113. Available: 10.1007/978-3-031-14463-9_7.  
+#' @references  Carrington AM, Fieguth PW, Mayr F, James ND, Holzinger A, Pickering JW, et al. The ROC Diagonal is not Layperson's Chance: a New Baseline Shows the Useful Area. Machine Learning and Knowledge Extraction. Vienna, Austria: Springer; 2022. pp. 100-113. Available: 10.1007/978-3-031-14463-9_7.  
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr
@@ -768,12 +768,10 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
 #' @param n_cut An integer indicating either the number of intervals of the same width, the number of intervals of the same number of subjects, or the width (as a percentage) of the intervals.  
-#' @param cut_type One of three strings:
-#' \itemize{
-#' \item{\strong{interval}} {applies the cut_interval() function to get n_cut intervals of approximately equal width; }
-#' \item{\strong{number}} {applies the cut_number() function to get n_cut intervals of approximately equal number of subjects; } 
-#' \item{\strong{width}} {applies the cut_width() function to get ~ 100/n_cut intervals of n_cut width. }
-#' }
+#' @param cut_type One of three strings: "interval", "number", or "width". 
+#'   - "interval": uses cut_interval() to get n_cut intervals of approximately equal width.
+#'   - "number": uses cut_number() to get n_cut intervals with approximately equal counts.
+#'   - "width": uses cut_width() to get intervals of a fixed width (approximately 100/n_cut).
 #' @param include_margin TRUE for including producing a bar plot of the counts of in each of the intervals. Default is FALSE.  Note if the output is saved to my_graphs then using the library gridExtra the function grid.arrange(graphs$g, graphs$g_marg , nrow = 2, heights = c(2,1)) will produce a plot with both the calibration plot and the marginal plot.  
 #' @return a list of one or two ggplots
 #' @examples
@@ -783,7 +781,11 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 #'x1<-data_risk$baseline
 #'x2<-data_risk$new
 #'#e.g.
-#'output <- ggcalibrate(x1, x2 = NULL , y = NULL,  n_cut = 5, cut_type = "interval", include_margin = FALSE) 
+#'output <- ggcalibrate(
+#'  x1, x2 = NULL, y = NULL,
+#'  n_cut = 5, cut_type = "interval",
+#'  include_margin = FALSE
+#')
 #'}
 #' @import forcats
 #' @import ggplot2
@@ -1666,33 +1668,12 @@ extract_NRI_CI <- function(results.boot, conf.level, n.boot, dp){
 #' @param conf.level The confidence interval expressed as a fraction of 1 (ie 0.95 is the 95\% confidence interval )
 #' @param n.boot  The number of "bootstraps" to use. Performance slows down with more bootstraps. For trialling result, use a low number (eg 5), for accuracy use a large number (eg 2000)
 #' @param dp The number of decimal places to display
-#' @return A list with four items: 
-#' \itemize{
-#' \item{\strong{1. meta_data}} {Some overall meta data - Confidence Interval, number of bootstraps, thresholds, input type}
-#' \item{\strong{2. Metrics}} {Point estimates of the statistical metrics (see list below)}
-#' \item{\strong{3. Each_bootstrap_metrics}} {Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
-#' \item{\strong{4. Summary Metrics}} {Point estimates with confidence intervals of the statistical metrics. See following list:)}
-#' \itemize{
-#' \item{\strong{Total (n)}} {Total number of subjects}
-#' \item{\strong{Events (n)}} {Number of subjects with the event (outcome) of intrest}
-#' \item{\strong{Non-events (n)}} {Number of subjects without the event (outcome) of intrest}
-#' \item{\strong{NRI events}} {The NRI with confidence interval for those with the event.}
-#' \item{\strong{NRI non-events}} {The NRI with confidence interval for those without the event.}
-#' \item{\strong{IDI events}} {The IDI (Integrated Discrimination Improvement) with confidence interval for those with the event. Expressed as a fraction}
-#' \item{\strong{IDI non-events}} {The IDI with confidence interval for those without the event. Expressed as a fraction}
-#' \item{\strong{IS(baseline model)}} {The Integrated Sensitivity (area under the sensitivity-calculated risk curve) for the baseline model}
-#' \item{\strong{IS(new model)}} {The Integrated Sensitivity for the reference (alt) model. Note, the IDI events should be the difference between IS(new model) and IS(baseline model)}
-#' \item{\strong{IP(baseline model)}} {The Integrated 1-Specificity (area under the 1-specificity-calculated risk curve) for the baseline model}
-#' \item{\strong{IP(new model)}} {The Integrated S1-Specificity for the reference (alt) model. Note, the IDI non-events should be the difference between IP(new model) and IP(baseline model)}
-#' \item{\strong{AUC(baseline model)}} {The Area Under the Receiver Operator Characteristic Curve for the baseline model}
-#' \item{\strong{AUC(new model)}} {The Area Under the Receiver Operator Characteristic Curve for the new (alt) model}
-#' \item{\strong{AUC difference}} {The difference in the AUCs betwen the reference and new model with a confidence interval}
-#' \item{\strong{difference (p)}} {P value for the difference in AUCs (DeLong method)}
-#' \item{\strong{Brier(baseline model)}} {The Brier score for the baseline model}
-#' \item{\strong{Brier(new model)}} {The Brier score for the alternate model}
-#' \item{\strong{Brier skill}} {The percent improvement of the alternatve over the baseline model based on the relative change in Brier score}
-#' \item{\strong{incidence}} {The incidence of the event}
-#' }
+#' @return A list with the following elements:
+#' \describe{
+#'   \item{meta_data}{A data.frame with thresholds, confidence interval, number of bootstraps, input data type and decimal places.}
+#'   \item{Metrics}{Point estimates of the statistical metrics (see function docs).}
+#'   \item{Each_bootstrap_metrics}{List of per-bootstrap metric results.}
+#'   \item{Summary_metrics}{A table of summary metrics with confidence intervals (e.g. Total, Events, Non-events, NRI, IDI, AUCs, Brier scores, etc.).}
 #' }
 #' @export 
 #' @examples
@@ -1705,7 +1686,7 @@ extract_NRI_CI <- function(results.boot, conf.level, n.boot, dp){
 #'#e.g.
 #'output<-CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
 #'}
-#' @references  Pencina, M. J., D'Agostino, R. B., & Vasan, R. S. (2008). Evaluating the added stats::predictive ability of a new marker: From area under the ROC curve to reclassification and beyond. Statistics in Medicine, 27(2), 157–172. doi:10.1002/sim.2929
+#' @references  Pencina, M. J., D'Agostino, R. B., & Vasan, R. S. (2008). Evaluating the added stats::predictive ability of a new marker: From area under the ROC curve to reclassification and beyond. Statistics in Medicine, 27(2), 157-172. doi:10.1002/sim.2929
 CI.raplot <- function(x1, x2 = NULL, y = NULL,  t = NULL, NRI_return = FALSE,  conf.level = 0.95, n.boot = 1000, dp = 3) {
   
   if (class(x1)[1] == "glm") {
@@ -1911,24 +1892,12 @@ statistics.classNRI <- function(c1, c2, y,s1 = NULL, s2 = NULL) {
 #' @param conf.level The confidence interval expressed as a fraction of 1 (ie 0.95 is the 95\% confidence interval )
 #' @param n.boot  The number of "bootstraps" to use. Performance slows down with more bootstraps. For trialling result, use a low number (eg 2), for accuracy use a large number (eg 2000)
 #' @param dp The number of decimal places to display
-#' @return A list with four items: 
-#' \itemize{
-#' \item{\strong{1. meta_data}} {Some overall meta data - Confidence Interval, number of bootstraps, s1, s2}
-#' \item{\strong{2. Metrics}} {Point estimates of the statistical metrics (see list below)}
-#' \item{\strong{3. Each_bootstrap_metrics}} {Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
-#' \item{\strong{4. Summary Metrics}} {Point estimates with confidence intervals of the statistical metrics. See following list:)}
-#' \itemize{
-#'  \item{\strong{Total (n)}} {Total number of subjects}
-#' \item{\strong{Events (n)}} {Number of subjects with the event (outcome) of interest}
-#' \item{\strong{Non-events (n)}} {Number of subjects without the event (outcome) of interest}
-#' \item{\strong{Prevalence}} {The prevalence of the event}
-#' \item{\strong{NRI events}} {The NRI with confidence interval for those with the event.}
-#' \item{\strong{NRI non-events}} {The NRI with confidence interval for those without the event.}
-#' \item{\strong{wNRI-events}} {The weighted NRI for those with the event}
-#' \item{\strong{wNRI-nonevents}} {The weighted NRI for those without the event }
-#' \item{\strong{Confusion matrix events}} {A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
-#' \item{\strong{Confusion matrix non-events}} {A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
-#' }
+#' @return A list with the following elements:
+#' \describe{
+#'   \item{meta_data}{Some overall meta data - Confidence Interval, number of bootstraps, s1, s2}
+#'   \item{Metrics}{Point estimates of the statistical metrics.}
+#'   \item{Each_bootstrap_metrics}{Point estimates of the statistical metrics for each bootstrapped sample.}
+#'   \item{Summary_metrics}{Point estimates with confidence intervals of the statistical metrics (e.g. Total, Events, Non-events, Prevalence, NRI, IDI, confusion matrices).}
 #' }
 #' @return A matrix of metrics
 #' @export

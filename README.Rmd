@@ -15,25 +15,25 @@ knitr::opts_chunk$set(
 )
 ```
 
-# rap
+# raptools
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The rap package contains functions for generating statistical metrics and visual means to assess the improvement in risk prediction of one risk model over another.  It includes the Risk Assessment Plot (hence rap).  
+The raptools package contains functions for generating statistical metrics and visual means to assess the improvement in risk prediction of one risk model over another.  It includes the Risk Assessment Plot (hence rap).  
 
 ## Installation
 
-You can install the development version or rap from [GitHub](https://github.com/) with:
+You can install the development version of raptools from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JohnPickering/rap")
+devtools::install_github("Researchverse/raptools")
 ```
 
 ## History and versions
 
-rap began as Matlab code in 2012 after I wrote a paper ([1](https://cjasn.asnjournals.org/content/7/8/1355){target="_blank"}) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper.  Dr David Cairns kindly provided some R code for the Risk Assessment Plot.  This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I've come to consider some metrics as not helpful.  So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied.  In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics.  These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI).  Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.  
+raptools began as Matlab code in 2012 after I wrote a paper ([1](https://cjasn.asnjournals.org/content/7/8/1355){target="_blank"}) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper.  Dr David Cairns kindly provided some R code for the Risk Assessment Plot.  This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I've come to consider some metrics as not helpful.  So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied.  In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics.  These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI).  Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.  
 
 Version 1.03 were major changes:  
 * allowed as input logistic regression models from glm (stats) and lrm (rms) as well as risk predictions calculated elsewhere.
@@ -62,7 +62,7 @@ This is a basic example for assessing the difference between two logistic regres
 
 ```{r example1, warnings = FALSE, message=FALSE}
 library(dplyr)
-library(rap)
+library(raptools)
 
 ## basic example code
 

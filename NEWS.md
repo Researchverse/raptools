@@ -1,7 +1,7 @@
-# rapr 1.22
+# raptools 1.22
 
 ## Major changes for CRAN submission
-* **Package renamed from 'rap' to 'rapr'** to resolve CRAN name conflict
+* **Package renamed from 'rapr' to 'raptools'** to resolve CRAN name conflict
 * Fixed DESCRIPTION file formatting for CRAN compliance
 * Added proper imports and global variable declarations to handle NSE issues
 * Cleaned up package structure to meet CRAN standards
@@ -34,4 +34,4 @@ Version 1.03:
 
 ## Background
 
-The rapr package began as MATLAB code in 2012 following the publication of "New Metrics for Assessing Diagnostic Potential of Candidate Biomarkers" (Clinical Journal of the American Society of Nephrology, 2012). The package provides comprehensive tools for assessing the comparative performance of logistic regression models, particularly in the context of biomarker evaluation and clinical prediction model improvement.
+The raptools package began as MATLAB code in 2012 following the publication of "New Metrics for Assessing Diagnostic Potential of Candidate Biomarkers" (Clinical Journal of the American Society of Nephrology, 2012). The package provides comprehensive tools for assessing the comparative performance of logistic regression models, particularly in the context of biomarker evaluation and clinical prediction model improvement.

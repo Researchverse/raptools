@@ -6,5 +6,12 @@
 ^\.git$
 ^\.gitignore$
 ^data-raw$
-^\.\.Rcheck$
+^raptools\.Rcheck$
+^.*\.Rcheck$
+^raptools-manual\.tex$
+^raptools\.Rproj$
 ^.*\.Rapp\.history$
+
+# Other editor/project files
+^\.Rhistory$
+^\.Rproj\.user$

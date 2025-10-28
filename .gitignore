@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-..Rcheck/
+*.Rcheck/
 *.tar.gz
 *.tgz
 .DS_Store

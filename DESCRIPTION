@@ -1,8 +1,8 @@
-Package: rapr
+Package: raptools
 Title: Risk Assessment Plot and Reclassification Metrics
 Version: 1.22
-Author: John W Pickering
-Maintainer: John W Pickering <John.Pickering@otago.ac.nz>
+Author: John W Pickering <John.Pickering@otago.ac.nz>, Dimitrios Doudesis <dimitrios.doudesis@ed.ac.uk>
+Maintainer: John W Pickering <John.Pickering@otago.ac.nz>, Daniel Perez Vicencio <dvicencio947@gmail.com>
 Description: Provides functions for assessing the comparative performance of two logistic regression models or results of such models or classification models. Discrimination metrics include Integrated Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Difference in AUCs, Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and Calibration plots.  
 Depends:
     R (>= 4.1.0)
@@ -23,5 +23,5 @@ LazyLoad: true
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 Suggests: 
-URL: https://github.com/Researchverse/rapr
-BugReports: https://github.com/Researchverse/rapr/issues
+URL: https://github.com/Researchverse/raptools
+BugReports: https://github.com/Researchverse/raptools/issues
