@@ -1,7 +1,7 @@
 # raptools 1.22
 
 ## Major changes for CRAN submission
-* **Package renamed from 'rapr' to 'raptools'** to resolve CRAN name conflict
+* **Package renamed from 'rap' to 'raptools'** to resolve CRAN name conflict
 * Fixed DESCRIPTION file formatting for CRAN compliance
 * Added proper imports and global variable declarations to handle NSE issues
 * Cleaned up package structure to meet CRAN standards
