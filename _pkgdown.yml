@@ -2,6 +2,8 @@ url: https://researchverse.github.io/raptools/
 
 template:
   bootstrap: 5
+  params:
+    bootswatch: flatly
 
 home:
   title: "raptools: Risk Assessment Plot and Reclassification Metrics"
