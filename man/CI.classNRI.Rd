@@ -34,22 +34,22 @@ CI.classNRI(
 }
 \value{
 A list with four items: 
-\itemize{
-\item{\strong{1. meta_data}} {Some overall meta data - Confidence Interval, number of bootstraps, s1, s2}
-\item{\strong{2. Metrics}} {Point estimates of the statistical metrics (see list below)}
-\item{\strong{3. Each_bootstrap_metrics}} {Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
-\item{\strong{4. Summary Metrics}} {Point estimates with confidence intervals of the statistical metrics. See following list:)}
-\itemize{
- \item{\strong{Total (n)}} {Total number of subjects}
-\item{\strong{Events (n)}} {Number of subjects with the event (outcome) of interest}
-\item{\strong{Non-events (n)}} {Number of subjects without the event (outcome) of interest}
-\item{\strong{Prevalence}} {The prevalence of the event}
-\item{\strong{NRI events}} {The NRI with confidence interval for those with the event.}
-\item{\strong{NRI non-events}} {The NRI with confidence interval for those without the event.}
-\item{\strong{wNRI-events}} {The weighted NRI for those with the event}
-\item{\strong{wNRI-nonevents}} {The weighted NRI for those without the event }
-\item{\strong{Confusion matrix events}} {A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
-\item{\strong{Confusion matrix non-events}} {A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
+\describe{
+\item{1. meta_data}{Some overall meta data - Confidence Interval, number of bootstraps, s1, s2}
+\item{2. Metrics}{Point estimates of the statistical metrics (see list below)}
+\item{3. Each_bootstrap_metrics}{Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
+\item{4. Summary Metrics}{Point estimates with confidence intervals of the statistical metrics. See following list:)}
+\describe{
+ \item{Total (n)}{Total number of subjects}
+\item{Events (n)}{Number of subjects with the event (outcome) of interest}
+\item{Non-events (n)}{Number of subjects without the event (outcome) of interest}
+\item{Prevalence}{The prevalence of the event}
+\item{NRI events}{The NRI with confidence interval for those with the event.}
+\item{NRI non-events}{The NRI with confidence interval for those without the event.}
+\item{wNRI-events}{The weighted NRI for those with the event}
+\item{wNRI-nonevents}{The weighted NRI for those without the event }
+\item{Confusion matrix events}{A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
+\item{Confusion matrix non-events}{A confusion matric (table) showing the relationship of the numbers classified into each class with the baseline model compared to those in each class with the new model}
 }
 }
 

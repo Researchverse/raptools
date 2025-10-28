@@ -22,3 +22,6 @@ LazyData: true
 LazyLoad: true
 RoxygenNote: 7.3.2
 Encoding: UTF-8
+Suggests: 
+URL: https://github.com/Researchverse/rapr
+BugReports: https://github.com/Researchverse/rapr/issues

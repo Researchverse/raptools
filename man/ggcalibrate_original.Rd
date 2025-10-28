@@ -23,10 +23,10 @@ ggcalibrate_original(
 \item{n_cut}{An integer indicating either the number of intervals of the same width, the number of intervals of the same number of subjects, or the width (as a percentage) of the intervals.}
 
 \item{cut_type}{One of three strings:
-\itemize{
-\item{\strong{interval}} {applies the cut_interval() function to get n_cut intervals of approximately equal width; }
-\item{\strong{number}} {applies the cut_number() function to get n_cut intervals of approximately equal number of subjects; } 
-\item{\strong{width}} {applies the cut_width() function to get ~ 100/n_cut intervals of n_cut width. }
+\describe{
+\item{interval}{applies the cut_interval() function to get n_cut intervals of approximately equal width}
+\item{number}{applies the cut_number() function to get n_cut intervals of approximately equal number of subjects} 
+\item{width}{applies the cut_width() function to get ~ 100/n_cut intervals of n_cut width. }
 }}
 
 \item{include_margin}{TRUE for including producing a bar plot of the counts of in each of the intervals. Default is FALSE.  Note if the output is saved to my_graphs then using the library gridExtra the function grid.arrange(graphs$g, graphs$g_marg , nrow = 2, heights = c(2,1)) will produce a plot with both the calibration plot and the marginal plot.}

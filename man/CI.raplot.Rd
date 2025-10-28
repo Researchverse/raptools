@@ -34,31 +34,31 @@ CI.raplot(
 }
 \value{
 A list with four items: 
-\itemize{
-\item{\strong{1. meta_data}} {Some overall meta data - Confidence Interval, number of bootstraps, thresholds, input type}
-\item{\strong{2. Metrics}} {Point estimates of the statistical metrics (see list below)}
-\item{\strong{3. Each_bootstrap_metrics}} {Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
-\item{\strong{4. Summary Metrics}} {Point estimates with confidence intervals of the statistical metrics. See following list:)}
-\itemize{
-\item{\strong{Total (n)}} {Total number of subjects}
-\item{\strong{Events (n)}} {Number of subjects with the event (outcome) of intrest}
-\item{\strong{Non-events (n)}} {Number of subjects without the event (outcome) of intrest}
-\item{\strong{NRI events}} {The NRI with confidence interval for those with the event.}
-\item{\strong{NRI non-events}} {The NRI with confidence interval for those without the event.}
-\item{\strong{IDI events}} {The IDI (Integrated Discrimination Improvement) with confidence interval for those with the event. Expressed as a fraction}
-\item{\strong{IDI non-events}} {The IDI with confidence interval for those without the event. Expressed as a fraction}
-\item{\strong{IS(baseline model)}} {The Integrated Sensitivity (area under the sensitivity-calculated risk curve) for the baseline model}
-\item{\strong{IS(new model)}} {The Integrated Sensitivity for the reference (alt) model. Note, the IDI events should be the difference between IS(new model) and IS(baseline model)}
-\item{\strong{IP(baseline model)}} {The Integrated 1-Specificity (area under the 1-specificity-calculated risk curve) for the baseline model}
-\item{\strong{IP(new model)}} {The Integrated S1-Specificity for the reference (alt) model. Note, the IDI non-events should be the difference between IP(new model) and IP(baseline model)}
-\item{\strong{AUC(baseline model)}} {The Area Under the Receiver Operator Characteristic Curve for the baseline model}
-\item{\strong{AUC(new model)}} {The Area Under the Receiver Operator Characteristic Curve for the new (alt) model}
-\item{\strong{AUC difference}} {The difference in the AUCs betwen the reference and new model with a confidence interval}
-\item{\strong{difference (p)}} {P value for the difference in AUCs (DeLong method)}
-\item{\strong{Brier(baseline model)}} {The Brier score for the baseline model}
-\item{\strong{Brier(new model)}} {The Brier score for the alternate model}
-\item{\strong{Brier skill}} {The percent improvement of the alternatve over the baseline model based on the relative change in Brier score}
-\item{\strong{incidence}} {The incidence of the event}
+\describe{
+\item{1. meta_data}{Some overall meta data - Confidence Interval, number of bootstraps, thresholds, input type}
+\item{2. Metrics}{Point estimates of the statistical metrics (see list below)}
+\item{3. Each_bootstrap_metrics}{Point estimates of the statistical metrics for each bootstrapped sample (see list below)}
+\item{4. Summary Metrics}{Point estimates with confidence intervals of the statistical metrics. See following list:)}
+\describe{
+\item{Total (n)}{Total number of subjects}
+\item{Events (n)}{Number of subjects with the event (outcome) of intrest}
+\item{Non-events (n)}{Number of subjects without the event (outcome) of intrest}
+\item{NRI events}{The NRI with confidence interval for those with the event.}
+\item{NRI non-events}{The NRI with confidence interval for those without the event.}
+\item{IDI events}{The IDI (Integrated Discrimination Improvement) with confidence interval for those with the event. Expressed as a fraction}
+\item{IDI non-events}{The IDI with confidence interval for those without the event. Expressed as a fraction}
+\item{IS(baseline model)}{The Integrated Sensitivity (area under the sensitivity-calculated risk curve) for the baseline model}
+\item{IS(new model)}{The Integrated Sensitivity for the reference (alt) model. Note, the IDI events should be the difference between IS(new model) and IS(baseline model)}
+\item{IP(baseline model)}{The Integrated 1-Specificity (area under the 1-specificity-calculated risk curve) for the baseline model}
+\item{IP(new model)}{The Integrated S1-Specificity for the reference (alt) model. Note, the IDI non-events should be the difference between IP(new model) and IP(baseline model)}
+\item{AUC(baseline model)}{The Area Under the Receiver Operator Characteristic Curve for the baseline model}
+\item{AUC(new model)}{The Area Under the Receiver Operator Characteristic Curve for the new (alt) model}
+\item{AUC difference}{The difference in the AUCs betwen the reference and new model with a confidence interval}
+\item{difference (p)}{P value for the difference in AUCs (DeLong method)}
+\item{Brier(baseline model)}{The Brier score for the baseline model}
+\item{Brier(new model)}{The Brier score for the alternate model}
+\item{Brier skill}{The percent improvement of the alternatve over the baseline model based on the relative change in Brier score}
+\item{incidence}{The incidence of the event}
 }
 }
 }
