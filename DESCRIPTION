@@ -2,7 +2,7 @@ Package: raptools
 Title: Risk Assessment Plot and Reclassification Metrics
 Version: 1.22
 Authors@R: c(
-        person("John W", "Pickering", email = "John.Pickering@otago.ac.nz", role = "aut"),
+        person("John W", "Pickering", email = "John.Pickering@otago.ac.nz", role = c("aut", "cre")),
         person("Dimitrios", "Doudesis", email = "dimitrios.doudesis@ed.ac.uk", role = "aut"),
         person("Daniel Perez", "Vicencio", email = "dvicencio947@gmail.com", role = "cre")
     )
