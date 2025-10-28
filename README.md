@@ -3,29 +3,29 @@ John W Pickering
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rap
+# rapr
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The rap package contains functions for generating statistical metrics
+The rapr package contains functions for generating statistical metrics
 and visual means to assess the improvement in risk prediction of one
 risk model over another. It includes the Risk Assessment Plot (hence
 rap).
 
 ## Installation
 
-You can install the development version or rap from
+You can install the development version of rapr from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JohnPickering/rap")
+devtools::install_github("JohnPickering/rapr")
 ```
 
 ## History and versions
 
-rap began as Matlab code in 2012 after I wrote a paper
+rapr began as Matlab code in 2012 after I wrote a paper
 (<a href="https://cjasn.asnjournals.org/content/7/8/1355"
 target="_blank">1</a>) for the Nephrology community on assessing the
 added value of one biomarker to a clinical prediction model. I worked
@@ -81,7 +81,7 @@ logistic regression models:
 
 ``` r
 library(dplyr)
-library(rap)
+library(rapr)
 
 ## basic example code
 
