@@ -2,14 +2,11 @@ name: pkgdown
 
 on:
   push:
-    branches: [main, master, devel, gh-pages]
+    branches: [main, master, devel]
   pull_request:
     branches: [main, master, devel]
   release:
     types: [published]
-  schedule:
-    # Run daily at 2 AM UTC to keep site updated
-    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -21,14 +18,9 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -45,13 +37,10 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Upload to GitHub pages
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
       - name: Deploy to GitHub pages 🚀
-        id: deployment
         if: github.event_name != 'pull_request'
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          clean: false
+          branch: gh-pages
+          folder: docs
