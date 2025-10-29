@@ -3,7 +3,7 @@ John W Pickering
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# raptool
+# raptools
 
 <!-- badges: start -->
 <!-- badges: end -->
