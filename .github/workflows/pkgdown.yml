@@ -2,11 +2,14 @@ name: pkgdown
 
 on:
   push:
-    branches: [main, master, devel]
+    branches: [main, master, devel, gh-pages]
   pull_request:
     branches: [main, master, devel]
   release:
     types: [published]
+  schedule:
+    # Run daily at 2 AM UTC to keep site updated
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
