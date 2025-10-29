@@ -21,6 +21,9 @@ jobs:
       contents: read
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,8 +42,13 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
+      - name: Upload to GitHub pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
       - name: Deploy to GitHub pages 🚀
+        id: deployment
         if: github.event_name != 'pull_request'
         uses: actions/deploy-pages@v4
-        with:
-          artifact-name: github-pages
