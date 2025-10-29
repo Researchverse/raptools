@@ -1,0 +1,54 @@
+url: https://researchverse.github.io/raptools/
+
+template:
+  bootstrap: 5
+  params:
+    bootswatch: flatly
+
+home:
+  title: "raptools: Risk Assessment Plot and Reclassification Metrics"
+  description: >
+    Provides functions for assessing the comparative performance of two logistic regression models 
+    or results of such models or classification models. Discrimination metrics include Integrated 
+    Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Difference in AUCs, 
+    Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and 
+    Calibration plots.
+
+navbar:
+  structure:
+    left:  [home, reference, articles, tutorials, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/Researchverse/raptools/
+
+reference:
+- title: "Main Functions"
+  desc: "Primary functions for risk assessment and reclassification"
+- contents:
+  - ggrap
+  - ggdecision
+  - ggcalibrate
+  - ggroc
+  - ggprerec
+  - ggcontribute
+  - meta.rap
+  - summary.rap
+
+- title: "Classification Metrics"
+  desc: "Functions for calculating reclassification metrics"
+- contents:
+  - starts_with("CI.")
+  - starts_with("statistics.")
+  - extractCI
+  - extract_NRI_CI
+
+- title: "Data and Utilities"
+  desc: "Example datasets and utility functions"
+- contents:
+  - data_class
+  - data_risk
+  - anova_glm
+  - ggcalibrate_original
+
