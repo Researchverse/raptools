@@ -345,4 +345,3 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 #>  9 NRI_event         0.25 (CI: 0.16 to 0.38)   
 #> 10 NRI_nonevent      -0.05 (CI: -0.12 to 0.01)
 ```
-# Automated deployment test
