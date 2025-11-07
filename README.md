@@ -26,7 +26,7 @@ devtools::install_github("Researchverse/raptools")
 ## History and versions
 
 raptools began as Matlab code in 2012 after I wrote a paper
-(<a href="https://cjasn.asnjournals.org/content/7/8/1355"
+(<a href="https://journals.lww.com/cjasn/abstract/2012/08000/new_metrics_for_assessing_diagnostic_potential_of.23.aspx"
 target="_blank">1</a>) for the Nephrology community on assessing the
 added value of one biomarker to a clinical prediction model. I worked
 with Professor Zoltan Endre on that paper. Dr David Cairns kindly
