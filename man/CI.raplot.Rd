@@ -45,14 +45,17 @@ A list with the following elements:
 The CI.raplot function produces summary metrics for risk assessment. Outputs the NRI, IDI, weighted NRI and category Free NRI all for those with events and those without events.  Also the AUCs of the two models and the comparison (DeLong) between AUCs. Output includes confidence intervals. Uses statistics.raplot.  Displayed graphically by raplot.
 }
 \examples{
-\dontrun{
+\donttest{
 data(data_risk)
-y<-data_risk$outcome 
-x1<-data_risk$baseline
-x2<-data_risk$new
-t<-c(0,0.19,1) 
+# Remove rows with missing values
+complete_cases <- complete.cases(data_risk)
+data_clean <- data_risk[complete_cases, ]
+y <- data_clean$outcome 
+x1 <- data_clean$baseline
+x2 <- data_clean$new
+t <- c(0, 0.19, 1) 
 #e.g.
-output<-CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
+output <- CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
 }
 }
 \references{

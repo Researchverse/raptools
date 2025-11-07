@@ -13,6 +13,9 @@ ggcontribute(x1, x2 = NULL, option_flag = c("chi2", "percent"))
 
 \item{option_flag}{A flag to choose if the relative percentage of the Chi2-degrees of freedom are plotted.}
 }
+\value{
+A ggplot object displaying the contribution of each variable to the model(s) using either Chi-square minus degrees of freedom or relative percentage contribution. If two models are provided, arrows show the change in contribution between models.
+}
 \description{
 ggcontribute plots the contribution of each variable to the model
 }

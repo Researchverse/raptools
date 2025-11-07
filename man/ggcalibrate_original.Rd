@@ -36,14 +36,17 @@ a list of one or two ggplots
 ggcalibrate_original plots the stats::predicted events against the actual event rate using the "old" form.
 }
 \examples{
-\dontrun{
+\donttest{
 data(data_risk)
-y<-data_risk$outcome 
-x1<-data_risk$baseline
-x2<-data_risk$new
+# Remove rows with missing values
+complete_cases <- complete.cases(data_risk)
+data_clean <- data_risk[complete_cases, ]
+y <- data_clean$outcome 
+x1 <- data_clean$baseline
+x2 <- data_clean$new
 #e.g.
-output <- ggcalibrate(
- x1, x2 = NULL, y = NULL,
+output <- ggcalibrate_original(
+ x1, x2, y,
  n_cut = 5, cut_type = "interval",
  include_margin = FALSE
 )

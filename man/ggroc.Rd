@@ -26,6 +26,9 @@ ggroc(
 
 \item{label_number}{The number of points on the curve to label.The default has no labels.}
 }
+\value{
+A ggplot object displaying the ROC curve(s) with sensitivity on the y-axis and 1-specificity on the x-axis. If two models are provided, both curves are shown for comparison.
+}
 \description{
 ggroc plots Sensitivity v 1-Specificity
 }

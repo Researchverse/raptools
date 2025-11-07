@@ -13,6 +13,9 @@ ggprerec(x1, x2 = NULL, y = NULL)
 
 \item{y}{Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE).}
 }
+\value{
+A ggplot object displaying the precision-recall curve(s) with recall (sensitivity) on the x-axis and precision (positive predictive value) on the y-axis. If two models are provided, both curves are shown for comparison.
+}
 \description{
 ggprerec plots Precision (PPV) v Recall (Sensitivity)
 }

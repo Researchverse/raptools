@@ -24,7 +24,7 @@ A matrix of metrics for use within CI.classNRI
 The function statistics.classNRI calculates the NRI metrics for reclassification of data already in classes. For use by CI.classNRI.
 }
 \examples{
-\dontrun{
+\donttest{
 data(data_class)
 y <- data_class$outcome 
 c1 <- data_class$base_class
