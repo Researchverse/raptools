@@ -1,6 +1,6 @@
 Package: raptools
 Title: Risk Assessment Plot and Reclassification Metrics
-Version: 1.22
+Version: 1.22.0
 Authors@R: c(
         person(
         given = "John W", 
