@@ -335,6 +335,7 @@ ggdecision <- function(x1, x2=NULL, y=NULL) {
 #' @param carrington_line The Useful Area is from the roc down to this line. It depends on prevalence and the costs of FP, FN, TP, TN.  Default is FALSE. See Carrington et al.  
 #' @param costs Numeric vectors costs = c(cFP, cFN,cTP, cTN). The costs of FP, FN, TP, TN.  Default, c(0,0,1,1), is for there to be no costs for the FP & FN and identical costs for TN and TP.  See Carrington et al.  
 #' @param label_number The number of points on the curve to label.The default has no labels.    
+#' @return A ggplot object displaying the ROC curve(s) with sensitivity on the y-axis and 1-specificity on the x-axis. If two models are provided, both curves are shown for comparison.
 #' @references  Carrington AM, Fieguth PW, Mayr F, James ND, Holzinger A, Pickering JW, et al. The ROC Diagonal is not Layperson's Chance: a New Baseline Shows the Useful Area. Machine Learning and Knowledge Extraction. Vienna, Austria: Springer; 2022. pp. 100-113. Available: 10.1007/978-3-031-14463-9_7.  
 #' @import ggplot2
 #' @import tidyr
@@ -505,6 +506,7 @@ ggroc <- function(x1, x2=NULL, y=NULL,  carrington_line = FALSE, costs = c(0,0,1
 #' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or alculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
+#' @return A ggplot object displaying the precision-recall curve(s) with recall (sensitivity) on the x-axis and precision (positive predictive value) on the y-axis. If two models are provided, both curves are shown for comparison.
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr
@@ -646,7 +648,7 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
 #' @param ci_level Confidence interval of the curve (default = 0.95).  
 #' @return a ggplot
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'data(data_risk)
 #'y<-data_risk$outcome 
 #'x1<-data_risk$baseline
@@ -775,7 +777,7 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 #' @param include_margin TRUE for including producing a bar plot of the counts of in each of the intervals. Default is FALSE.  Note if the output is saved to my_graphs then using the library gridExtra the function grid.arrange(graphs$g, graphs$g_marg , nrow = 2, heights = c(2,1)) will produce a plot with both the calibration plot and the marginal plot.  
 #' @return a list of one or two ggplots
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'data(data_risk)
 #'y<-data_risk$outcome 
 #'x1<-data_risk$baseline
@@ -1248,6 +1250,7 @@ ggdecision <- function(x1, x2=NULL, y=NULL) {
 #' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package)  of the baseline model. 
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package)  of the new (alternative) model.  
 #' @param option_flag A flag to choose if the relative percentage of the Chi2-degrees of freedom are plotted.  
+#' @return A ggplot object displaying the contribution of each variable to the model(s) using either Chi-square minus degrees of freedom or relative percentage contribution. If two models are provided, arrows show the change in contribution between models.
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr
@@ -1677,7 +1680,7 @@ extract_NRI_CI <- function(results.boot, conf.level, n.boot, dp){
 #' }
 #' @export 
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'data(data_risk)
 #'y<-data_risk$outcome 
 #'x1<-data_risk$baseline
@@ -1790,7 +1793,7 @@ meta.rap = function(l) {
 #' @param s2 The benefit when a non-event is reclassified to a lower group.  i.e instead of counting as 1 an event classified to a lower group, it is counted as s2.  
 #' @return A matrix of metrics for use within CI.classNRI
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'data(data_class)
 #'y <- data_class$outcome 
 #'c1 <- data_class$base_class
@@ -1938,6 +1941,7 @@ CI.classNRI <- function(c1, c2, y, s1 = NULL, s2 = NULL,  conf.level = 0.95, n.b
 
 #' The function anova_glm() returns the Chi^2 and degrees of freedom for each variable & the same was anova.rms() does from lrm() in the rms package.
 #' @param f A logistic regression fit created using glm (base package) 
+#' @return A data frame with Chi-Square values and degrees of freedom for each variable in the model, plus a TOTAL row summarizing the overall model statistics.
 #' @import tidyr 
 #' @import dplyr
 #' @export

@@ -21,7 +21,7 @@ Authors@R: c(
         role = "cre"
         )
     )
-Description: Provides functions for assessing the comparative performance of two logistic regression models or results of such models or classification models. Discrimination metrics include Integrated Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Difference in AUCs, Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and Calibration plots.  
+Description: Tools for assessing the comparative performance of two logistic regression models or results of such models or classification models. Discrimination metrics include Integrated Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), and difference in Area Under the Curves (AUCs), Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and Calibration plots. Methods are described in Pickering and Endre (2012) <doi:10.1373/clinchem.2011.167965> and Pencina et al. (2008) <doi:10.1002/sim.2929>.  
 Depends:
     R (>= 4.1.0)
 Imports:
