@@ -650,11 +650,14 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
 #' @examples
 #'\donttest{
 #'data(data_risk)
-#'y<-data_risk$outcome 
-#'x1<-data_risk$baseline
-#'x2<-data_risk$new
+#'# Remove rows with missing values
+#'complete_cases <- complete.cases(data_risk)
+#'data_clean <- data_risk[complete_cases, ]
+#'y <- data_clean$outcome 
+#'x1 <- data_clean$baseline
+#'x2 <- data_clean$new
 #'#e.g.
-#'output <- ggcalibrate(x1, x2, y, models = "both") 
+#'output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95) 
 #'}
 #' @import forcats
 #' @import ggplot2
@@ -779,12 +782,15 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 #' @examples
 #'\donttest{
 #'data(data_risk)
-#'y<-data_risk$outcome 
-#'x1<-data_risk$baseline
-#'x2<-data_risk$new
+#'# Remove rows with missing values
+#'complete_cases <- complete.cases(data_risk)
+#'data_clean <- data_risk[complete_cases, ]
+#'y <- data_clean$outcome 
+#'x1 <- data_clean$baseline
+#'x2 <- data_clean$new
 #'#e.g.
-#'output <- ggcalibrate(
-#'  x1, x2 = NULL, y = NULL,
+#'output <- ggcalibrate_original(
+#'  x1, x2, y,
 #'  n_cut = 5, cut_type = "interval",
 #'  include_margin = FALSE
 #')
