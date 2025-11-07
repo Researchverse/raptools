@@ -1682,12 +1682,15 @@ extract_NRI_CI <- function(results.boot, conf.level, n.boot, dp){
 #' @examples
 #'\donttest{
 #'data(data_risk)
-#'y<-data_risk$outcome 
-#'x1<-data_risk$baseline
-#'x2<-data_risk$new
-#'t<-c(0,0.19,1) 
+#'# Remove rows with missing values
+#'complete_cases <- complete.cases(data_risk)
+#'data_clean <- data_risk[complete_cases, ]
+#'y <- data_clean$outcome 
+#'x1 <- data_clean$baseline
+#'x2 <- data_clean$new
+#'t <- c(0, 0.19, 1) 
 #'#e.g.
-#'output<-CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
+#'output <- CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
 #'}
 #' @references  Pencina, M. J., D'Agostino, R. B., & Vasan, R. S. (2008). Evaluating the added stats::predictive ability of a new marker: From area under the ROC curve to reclassification and beyond. Statistics in Medicine, 27(2), 157-172. doi:10.1002/sim.2929
 CI.raplot <- function(x1, x2 = NULL, y = NULL,  t = NULL, NRI_return = FALSE,  conf.level = 0.95, n.boot = 1000, dp = 3) {

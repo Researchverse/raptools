@@ -17,3 +17,7 @@
 ^\.Rproj\.user$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+
+# GitHub Actions and pkgdown configuration
+^\.github$
+^_pkgdown\.yml$
