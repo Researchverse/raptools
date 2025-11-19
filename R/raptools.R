@@ -648,17 +648,26 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
 #' @param ci_level Confidence interval of the curve (default = 0.95).  
 #' @return a ggplot
 #' @examples
-#'\donttest{
-#'data(data_risk)
-#'# Remove rows with missing values
-#'complete_cases <- complete.cases(data_risk)
-#'data_clean <- data_risk[complete_cases, ]
-#'y <- data_clean$outcome 
-#'x1 <- data_clean$baseline
-#'x2 <- data_clean$new
-#'#e.g.
-#'output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95) 
-#'}
+#' # Quick example with subset of data
+#' data(data_risk)
+#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+#' complete_cases <- complete.cases(data_subset)
+#' data_clean <- data_subset[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate(x1, x2, y, n_knots = 3, ci_level = 0.95)
+#' 
+#' \donttest{
+#' # Full dataset example
+#' data(data_risk)
+#' complete_cases <- complete.cases(data_risk)
+#' data_clean <- data_risk[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95) 
+#' }
 #' @import forcats
 #' @import ggplot2
 #' @import tidyr
@@ -780,21 +789,34 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 #' @param include_margin TRUE for including producing a bar plot of the counts of in each of the intervals. Default is FALSE.  Note if the output is saved to my_graphs then using the library gridExtra the function grid.arrange(graphs$g, graphs$g_marg , nrow = 2, heights = c(2,1)) will produce a plot with both the calibration plot and the marginal plot.  
 #' @return a list of one or two ggplots
 #' @examples
-#'\donttest{
-#'data(data_risk)
-#'# Remove rows with missing values
-#'complete_cases <- complete.cases(data_risk)
-#'data_clean <- data_risk[complete_cases, ]
-#'y <- data_clean$outcome 
-#'x1 <- data_clean$baseline
-#'x2 <- data_clean$new
-#'#e.g.
-#'output <- ggcalibrate_original(
-#'  x1, x2, y,
-#'  n_cut = 5, cut_type = "interval",
-#'  include_margin = FALSE
-#')
-#'}
+#' # Quick example with subset of data
+#' data(data_risk)
+#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+#' complete_cases <- complete.cases(data_subset)
+#' data_clean <- data_subset[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate_original(
+#'   x1, x2, y,
+#'   n_cut = 3, cut_type = "interval",
+#'   include_margin = FALSE
+#' )
+#' 
+#' \donttest{
+#' # Full dataset example
+#' data(data_risk)
+#' complete_cases <- complete.cases(data_risk)
+#' data_clean <- data_risk[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate_original(
+#'   x1, x2, y,
+#'   n_cut = 5, cut_type = "interval",
+#'   include_margin = FALSE
+#' )
+#' }
 #' @import forcats
 #' @import ggplot2
 #' @import tidyr
@@ -1686,18 +1708,28 @@ extract_NRI_CI <- function(results.boot, conf.level, n.boot, dp){
 #' }
 #' @export 
 #' @examples
-#'\donttest{
-#'data(data_risk)
-#'# Remove rows with missing values
-#'complete_cases <- complete.cases(data_risk)
-#'data_clean <- data_risk[complete_cases, ]
-#'y <- data_clean$outcome 
-#'x1 <- data_clean$baseline
-#'x2 <- data_clean$new
-#'t <- c(0, 0.19, 1) 
-#'#e.g.
-#'output <- CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 5, dp = 2) 
-#'}
+#' # Quick example with subset of data and fewer bootstraps
+#' data(data_risk)
+#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+#' complete_cases <- complete.cases(data_subset)
+#' data_clean <- data_subset[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' t <- c(0, 0.19, 1) 
+#' output <- CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 10, dp = 2)
+#' 
+#' \donttest{
+#' # Full dataset example with more bootstraps
+#' data(data_risk)
+#' complete_cases <- complete.cases(data_risk)
+#' data_clean <- data_risk[complete_cases, ]
+#' y <- data_clean$outcome 
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' t <- c(0, 0.19, 1) 
+#' output <- CI.raplot(x1, x2, y, t, conf.level = 0.95, n.boot = 1000, dp = 2) 
+#' }
 #' @references  Pencina, M. J., D'Agostino, R. B., & Vasan, R. S. (2008). Evaluating the added stats::predictive ability of a new marker: From area under the ROC curve to reclassification and beyond. Statistics in Medicine, 27(2), 157-172. doi:10.1002/sim.2929
 CI.raplot <- function(x1, x2 = NULL, y = NULL,  t = NULL, NRI_return = FALSE,  conf.level = 0.95, n.boot = 1000, dp = 3) {
   
@@ -1802,14 +1834,22 @@ meta.rap = function(l) {
 #' @param s2 The benefit when a non-event is reclassified to a lower group.  i.e instead of counting as 1 an event classified to a lower group, it is counted as s2.  
 #' @return A matrix of metrics for use within CI.classNRI
 #' @examples
-#'\donttest{
-#'data(data_class)
-#'y <- data_class$outcome 
-#'c1 <- data_class$base_class
-#'c2 <- data_class$new_class
-#'#e.g.
-#'output<-statistics.classNRI(c1, c2, y) 
-#'}
+#' # Quick example
+#' data(data_class)
+#' data_subset <- data_class[1:100, ]  # Use first 100 rows for speed
+#' y <- data_subset$outcome 
+#' c1 <- data_subset$base_class
+#' c2 <- data_subset$new_class
+#' output <- statistics.classNRI(c1, c2, y)
+#' 
+#' \donttest{
+#' # Full dataset example
+#' data(data_class)
+#' y <- data_class$outcome 
+#' c1 <- data_class$base_class
+#' c2 <- data_class$new_class
+#' output <- statistics.classNRI(c1, c2, y) 
+#' }
 #' @export
 statistics.classNRI <- function(c1, c2, y,s1 = NULL, s2 = NULL) {    
   

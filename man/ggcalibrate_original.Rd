@@ -36,19 +36,32 @@ a list of one or two ggplots
 ggcalibrate_original plots the stats::predicted events against the actual event rate using the "old" form.
 }
 \examples{
-\donttest{
+# Quick example with subset of data
 data(data_risk)
-# Remove rows with missing values
+data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+complete_cases <- complete.cases(data_subset)
+data_clean <- data_subset[complete_cases, ]
+y <- data_clean$outcome 
+x1 <- data_clean$baseline
+x2 <- data_clean$new
+output <- ggcalibrate_original(
+  x1, x2, y,
+  n_cut = 3, cut_type = "interval",
+  include_margin = FALSE
+)
+
+\donttest{
+# Full dataset example
+data(data_risk)
 complete_cases <- complete.cases(data_risk)
 data_clean <- data_risk[complete_cases, ]
 y <- data_clean$outcome 
 x1 <- data_clean$baseline
 x2 <- data_clean$new
-#e.g.
 output <- ggcalibrate_original(
- x1, x2, y,
- n_cut = 5, cut_type = "interval",
- include_margin = FALSE
+  x1, x2, y,
+  n_cut = 5, cut_type = "interval",
+  include_margin = FALSE
 )
 }
 }

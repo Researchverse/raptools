@@ -2,6 +2,16 @@
 
 This is a resubmission. In this version I have:
 
+* Removed "Tools for" from the Description field in DESCRIPTION (now starts with "Assessing the...")
+* Unwrapped examples from `\donttest{}` by creating small toy examples that run in < 5 seconds:
+  - Using first 100 rows of data instead of full 444 rows
+  - Using fewer knots (3 instead of 5) in calibration plots
+  - Using fewer bootstraps (10 instead of 1000) in CI calculations
+* All quick examples now execute automatically during R CMD check
+* Kept full dataset examples within `\donttest{}` for comprehensive demonstration
+
+## Previous submission fixes
+
 * Removed redundant "Provides functions for" from the DESCRIPTION
 * Explained the AUCs acronym as "Area Under the Curves" in the DESCRIPTION
 * Added references with DOIs to the DESCRIPTION (Pickering & Endre 2012, Pencina et al. 2008)

@@ -24,15 +24,24 @@ a ggplot
 ggcalibrate plots the stats::predicted events against the actual event rate
 }
 \examples{
-\donttest{
+# Quick example with subset of data
 data(data_risk)
-# Remove rows with missing values
+data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+complete_cases <- complete.cases(data_subset)
+data_clean <- data_subset[complete_cases, ]
+y <- data_clean$outcome 
+x1 <- data_clean$baseline
+x2 <- data_clean$new
+output <- ggcalibrate(x1, x2, y, n_knots = 3, ci_level = 0.95)
+
+\donttest{
+# Full dataset example
+data(data_risk)
 complete_cases <- complete.cases(data_risk)
 data_clean <- data_risk[complete_cases, ]
 y <- data_clean$outcome 
 x1 <- data_clean$baseline
 x2 <- data_clean$new
-#e.g.
 output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95) 
 }
 }

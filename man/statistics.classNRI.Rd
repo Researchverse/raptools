@@ -24,12 +24,20 @@ A matrix of metrics for use within CI.classNRI
 The function statistics.classNRI calculates the NRI metrics for reclassification of data already in classes. For use by CI.classNRI.
 }
 \examples{
+# Quick example
+data(data_class)
+data_subset <- data_class[1:100, ]  # Use first 100 rows for speed
+y <- data_subset$outcome 
+c1 <- data_subset$base_class
+c2 <- data_subset$new_class
+output <- statistics.classNRI(c1, c2, y)
+
 \donttest{
+# Full dataset example
 data(data_class)
 y <- data_class$outcome 
 c1 <- data_class$base_class
 c2 <- data_class$new_class
-#e.g.
-output<-statistics.classNRI(c1, c2, y) 
+output <- statistics.classNRI(c1, c2, y) 
 }
 }
