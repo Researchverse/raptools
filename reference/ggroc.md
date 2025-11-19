@@ -1,0 +1,67 @@
+# The ROC plot
+
+ggroc plots Sensitivity v 1-Specificity
+
+## Usage
+
+``` r
+ggroc(
+  x1,
+  x2 = NULL,
+  y = NULL,
+  carrington_line = FALSE,
+  costs = c(0, 0, 1, 1),
+  label_number = NULL
+)
+```
+
+## Arguments
+
+- x1:
+
+  Either a logistic regression fitted using glm (base package) or lrm
+  (rms package) or alculated probabilities (eg through a logistic
+  regression model) of the baseline model. Must be between 0 & 1
+
+- x2:
+
+  Either a logistic regression fitted using glm (base package) or lrm
+  (rms package) or calculated probabilities (eg through a logistic
+  regression model) of the new (alternative) model. Must be between 0 &
+  1
+
+- y:
+
+  Binary of outcome of interest. Must be 0 or 1 (if fitted models are
+  provided this is extracted from the fit which for an rms fit must have
+  x = TRUE, y = TRUE).
+
+- carrington_line:
+
+  The Useful Area is from the roc down to this line. It depends on
+  prevalence and the costs of FP, FN, TP, TN. Default is FALSE. See
+  Carrington et al.
+
+- costs:
+
+  Numeric vectors costs = c(cFP, cFN,cTP, cTN). The costs of FP, FN, TP,
+  TN. Default, c(0,0,1,1), is for there to be no costs for the FP & FN
+  and identical costs for TN and TP. See Carrington et al.
+
+- label_number:
+
+  The number of points on the curve to label.The default has no labels.
+
+## Value
+
+A ggplot object displaying the ROC curve(s) with sensitivity on the
+y-axis and 1-specificity on the x-axis. If two models are provided, both
+curves are shown for comparison.
+
+## References
+
+Carrington AM, Fieguth PW, Mayr F, James ND, Holzinger A, Pickering JW,
+et al. The ROC Diagonal is not Layperson's Chance: a New Baseline Shows
+the Useful Area. Machine Learning and Knowledge Extraction. Vienna,
+Austria: Springer; 2022. pp. 100-113. Available:
+10.1007/978-3-031-14463-9_7.

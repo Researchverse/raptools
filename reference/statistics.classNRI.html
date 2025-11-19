@@ -73,13 +73,21 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Quick example</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_class</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">data_class</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>  <span class="co"># Use first 100 rows for speed</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">$</span><span class="va">outcome</span> </span></span>
+<span class="r-in"><span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">$</span><span class="va">base_class</span></span></span>
+<span class="r-in"><span><span class="va">c2</span> <span class="op">&lt;-</span> <span class="va">data_subset</span><span class="op">$</span><span class="va">new_class</span></span></span>
+<span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">statistics.classNRI</span><span class="op">(</span><span class="va">c1</span>, <span class="va">c2</span>, <span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># Full dataset example</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_class</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">data_class</span><span class="op">$</span><span class="va">outcome</span> </span></span>
 <span class="r-in"><span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="va">data_class</span><span class="op">$</span><span class="va">base_class</span></span></span>
 <span class="r-in"><span><span class="va">c2</span> <span class="op">&lt;-</span> <span class="va">data_class</span><span class="op">$</span><span class="va">new_class</span></span></span>
-<span class="r-in"><span><span class="co">#e.g.</span></span></span>
-<span class="r-in"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu">statistics.classNRI</span><span class="op">(</span><span class="va">c1</span>, <span class="va">c2</span>, <span class="va">y</span><span class="op">)</span> </span></span>
+<span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">statistics.classNRI</span><span class="op">(</span><span class="va">c1</span>, <span class="va">c2</span>, <span class="va">y</span><span class="op">)</span> </span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -92,7 +100,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
