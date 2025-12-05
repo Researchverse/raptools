@@ -5,8 +5,6 @@ template:
   params:
     bootswatch: flatly
 
-logo: man/figures/logo.png
-
 home:
   title: "raptools: Risk Assessment Plot and Reclassification Metrics"
   sidebar:
@@ -22,6 +20,9 @@ home:
     href: https://github.com/Researchverse/raptools
 
 navbar:
+  logo:
+    image: man/figures/logo.png
+    href: https://researchverse.github.io/raptools/
   structure:
     left:  [home, reference, articles, tutorials, news]
     right: [search, github]

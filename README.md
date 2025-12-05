@@ -1,22 +1,29 @@
-John W Pickering
-27 June 2023
+---
+output: github_document
+author: John W Pickering
+date: 27 June 2023
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # raptools <img src="man/figures/logo.png" align="right" height="250" alt="" />
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The raptools package contains functions for generating statistical metrics
-and visual means to assess the improvement in risk prediction of one
-risk model over another. It includes the Risk Assessment Plot (hence
-rap).
+The raptools package contains functions for generating statistical metrics and visual means to assess the improvement in risk prediction of one risk model over another.  It includes the Risk Assessment Plot (hence rap).  
 
 ## Installation
 
-You can install the development version of raptools from
-[GitHub](https://github.com/) with:
+You can install raptools from CRAN:
+
+``` r
+install.packages("raptools")
+```
+
+Or install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -25,59 +32,33 @@ devtools::install_github("Researchverse/raptools")
 
 ## History and versions
 
-raptools began as Matlab code in 2012 after I wrote a paper
-(<a href="https://journals.lww.com/cjasn/abstract/2012/08000/new_metrics_for_assessing_diagnostic_potential_of.23.aspx"
-target="_blank">1</a>) for the Nephrology community on assessing the
-added value of one biomarker to a clinical prediction model. I worked
-with Professor Zoltan Endre on that paper. Dr David Cairns kindly
-provided some R code for the Risk Assessment Plot. This formed the basis
-of versions 0.1 to 0.4. Importantly, for those versions and the current
-version all errors are mine (sorry) and not those of Professor Endre or
-Dr Cairns. Since writing that paper I’ve come to consider some metrics
-as not helpful. So, for the current version I have dropped some
-statistical metrics that I believe are poor or wrongly applied. In
-particularly, I dropped providing the total NRI (Net Reclassification
-Improvement) and total IDI (Integrated Discrimination Improvement)
-metrics. These should never be presented because they inappropriately
-add together two fractions with differing denominators (NRI) or two
-means (IDI). Instead, these the NRIs and IDIs for those with and without
-the event of interest should be provided. Third, I have provided the
-change in AUCs rather than a p-value because the change is much more
-meaningful.
+raptools began as Matlab code in 2012 after I wrote a paper ([1](https://cjasn.asnjournals.org/content/7/8/1355){target="_blank"}) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper.  Dr David Cairns kindly provided some R code for the Risk Assessment Plot.  This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I've come to consider some metrics as not helpful.  So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied.  In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics.  These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI).  Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.  
 
 Version 1.03 were major changes:  
-\* allowed as input logistic regression models from glm (stats) and lrm
-(rms) as well as risk predictions calculated elsewhere. \* provided as
-outputs in addition to the Risk Assessment Plot, a form of calibration
-plot and decision curve.  
-\* the output from the main functions CI.raplot, and CI.classNRI are now
-lists that include the metrics for each bootstrap sample as well as the
-summary metrics. CI.classNRI also produces confusion matrices for those
-with and without the event of interest (separately). Bootstrapping is
-used to determine confidence intervals.
-
+* allowed as input logistic regression models from glm (stats) and lrm (rms) as well as risk predictions calculated elsewhere.
+* provided as outputs in addition to the Risk Assessment Plot, a form of calibration plot and decision curve.  
+* the output from the main functions CI.raplot, and CI.classNRI are now lists that include the metrics for each bootstrap sample as well as the summary metrics. CI.classNRI also produces confusion matrices for those with and without the event of interest (separately). Bootstrapping is used to determine confidence intervals.  
+ 
 Version 1.10 :  
-\* addition of ROC plot. \* calibration plot now uses (best practice)
-continuous curves (the old format is now “ggcalibrate_original()”).  
-\* addition of precision recall curves. \* all plots can be for one or
-two models.
+* addition of ROC plot. 
+* calibration plot now uses (best practice) continuous curves (the old format is now "ggcalibrate_original()").  
+* addition of precision recall curves.
+* all plots can be for one or two models.  
 
 Version 1.11:  
-\* made NRI metrics for models optional (use NRI_return = TRUE) to get
-them. \* changed behaviour to that “x2 = NULL” is possible for
-CI.raplot. It has the effect of creating a model where every probability
-is 0.5.  
-\* bug fix.
+* made NRI metrics for models optional (use NRI_return = TRUE) to get them. 
+* changed behaviour to that "x2 = NULL" is possible for CI.raplot.  It has the effect of creating a model where every probability is 0.5.   
+* bug fix.  
 
 Version 1.22 (current):  
-\* addition of ggcontribute graph. \* changed from geom_line to the
-geom_step for the ROC plot (because it represents the data better).  
-\* bug fix.
+* addition of ggcontribute graph.
+* changed from  geom_line to the geom_step for the ROC plot (because it represents the data better).   
+* bug fix.  
 
 ## Example 1
 
-This is a basic example for assessing the difference between two
-logistic regression models:
+This is a basic example for assessing the difference between two logistic regression models:
+
 
 ``` r
 library(dplyr)
@@ -159,24 +140,24 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 ## bootstrap derived metrics with confidence intervals  
 (assessment$Summary_metrics)
 #> # A tibble: 16 × 2
-#>    metric         statistics                  
-#>    <chr>          <chr>                       
-#>  1 n              433 (CI: 433 to 433)        
-#>  2 n_event        86.5 (CI: 70.43 to 99.25)   
-#>  3 n_non_event    346.5 (CI: 333.75 to 362.58)
-#>  4 Prevalence     0.2 (CI: 0.16 to 0.23)      
-#>  5 IDI_event      0.13 (CI: 0.1 to 0.17)      
-#>  6 IDI_nonevent   0.04 (CI: 0.02 to 0.05)     
-#>  7 IP_baseline    0.19 (CI: 0.18 to 0.19)     
-#>  8 IS_baseline    0.25 (CI: 0.23 to 0.27)     
-#>  9 IP_new         0.15 (CI: 0.13 to 0.16)     
-#> 10 IS_new         0.39 (CI: 0.34 to 0.42)     
-#> 11 Brier_baseline 0.15 (CI: 0.13 to 0.17)     
-#> 12 Brier_new      0.12 (CI: 0.11 to 0.14)     
-#> 13 Brier_skill    16.37 (CI: 9.72 to 24.46)   
-#> 14 AUC_baseline   0.68 (CI: 0.64 to 0.72)     
-#> 15 AUC_new        0.83 (CI: 0.76 to 0.85)     
-#> 16 AUC_difference 0.14 (CI: 0.11 to 0.19)
+#>    metric         statistics                
+#>    <chr>          <chr>                     
+#>  1 n              433 (CI: 433 to 433)      
+#>  2 n_event        84 (CI: 71.95 to 93.53)   
+#>  3 n_non_event    349 (CI: 339.48 to 361.05)
+#>  4 Prevalence     0.19 (CI: 0.17 to 0.22)   
+#>  5 IDI_event      0.14 (CI: 0.08 to 0.15)   
+#>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.04)   
+#>  7 IP_baseline    0.19 (CI: 0.18 to 0.2)    
+#>  8 IS_baseline    0.25 (CI: 0.22 to 0.27)   
+#>  9 IP_new         0.15 (CI: 0.14 to 0.16)   
+#> 10 IS_new         0.38 (CI: 0.32 to 0.42)   
+#> 11 Brier_baseline 0.15 (CI: 0.13 to 0.16)   
+#> 12 Brier_new      0.13 (CI: 0.1 to 0.14)    
+#> 13 Brier_skill    17.13 (CI: 9.92 to 22.73) 
+#> 14 AUC_baseline   0.66 (CI: 0.61 to 0.74)   
+#> 15 AUC_new        0.81 (CI: 0.77 to 0.86)   
+#> 16 AUC_difference 0.14 (CI: 0.09 to 0.21)
 ```
 
 ## Graphical assessments
@@ -187,7 +168,10 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 ggrap(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
-<img src="man/figures/README-ggrap-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggrap-1.png" alt="plot of chunk ggrap" width="100%" />
+<p class="caption">plot of chunk ggrap</p>
+</div>
 
 ``` r
 
@@ -200,7 +184,10 @@ ggrap(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
-<img src="man/figures/README-ggcalibrate-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggcalibrate-1.png" alt="plot of chunk ggcalibrate" width="100%" />
+<p class="caption">plot of chunk ggcalibrate</p>
+</div>
 
 ### The original calibration curve
 
@@ -209,7 +196,10 @@ ggcalibrate_original(x1 = baseline_risk, x2 = new_risk, y = outcome,  cut_type =
 #> $g
 ```
 
-<img src="man/figures/README-ggcalibrate_original-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggcalibrate_original-1.png" alt="plot of chunk ggcalibrate_original" width="100%" />
+<p class="caption">plot of chunk ggcalibrate_original</p>
+</div>
 
 ### The decision curve
 
@@ -217,7 +207,10 @@ ggcalibrate_original(x1 = baseline_risk, x2 = new_risk, y = outcome,  cut_type =
 ggdecision(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
-<img src="man/figures/README-ggdecision-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggdecision-1.png" alt="plot of chunk ggdecision" width="100%" />
+<p class="caption">plot of chunk ggdecision</p>
+</div>
 
 ### The precision-recall curve
 
@@ -225,7 +218,10 @@ ggdecision(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ggprerec(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
-<img src="man/figures/README-ggrerec-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggrerec-1.png" alt="plot of chunk ggrerec" width="100%" />
+<p class="caption">plot of chunk ggrerec</p>
+</div>
 
 ### The roc plot
 
@@ -233,27 +229,32 @@ ggprerec(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ggroc(x1 = baseline_risk, x2 = new_risk, y = outcome, carrington_line = TRUE)
 ```
 
-<img src="man/figures/README-ggroc-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggroc-1.png" alt="plot of chunk ggroc" width="100%" />
+<p class="caption">plot of chunk ggroc</p>
+</div>
 
-Note, there are additional options for the ROC plot including labelling
-points and distinguishing areas of the plot that are diagnostic from
-those that are not.
+Note, there are additional options for the ROC plot including labelling points and distinguishing areas of the plot that are diagnostic from those that are not.  
 
 ### The contribution plot
 
-Thanks to Professor Frank Harrell for these plots.
+Thanks to Professor Frank Harrell for these plots.  
+
 
 ``` r
 load("inst/extdata/fit_example")
 ggcontribute(x1 = eg_fit.glm)
 ```
 
-<img src="man/figures/README-ggcontribute-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-ggcontribute-1.png" alt="plot of chunk ggcontribute" width="100%" />
+<p class="caption">plot of chunk ggcontribute</p>
+</div>
 
 ## Example 2
 
-This is a basic example for assessing the difference in the results of
-reclassification:
+This is a basic example for assessing the difference in the results of reclassification:
+
 
 ``` r
 ## basic example code
@@ -332,16 +333,18 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
 #> # A tibble: 10 × 2
-#>    metric            statistics                
-#>    <chr>             <chr>                     
-#>  1 n                 444 (CI: 444 to 444)      
-#>  2 n_event           62 (CI: 53.95 to 75.53)   
-#>  3 n_non_event       382 (CI: 368.48 to 390.05)
-#>  4 Prevalence        0.14 (CI: 0.12 to 0.17)   
-#>  5 NRI_up_event      21 (CI: 15.95 to 29.52)   
-#>  6 NRI_up_nonevent   90 (CI: 78 to 106.53)     
-#>  7 NRI_down_event    6 (CI: 2.48 to 9)         
-#>  8 NRI_down_nonevent 75 (CI: 55.48 to 86.57)   
-#>  9 NRI_event         0.25 (CI: 0.16 to 0.38)   
-#> 10 NRI_nonevent      -0.05 (CI: -0.12 to 0.01)
+#>    metric            statistics                 
+#>    <chr>             <chr>                      
+#>  1 n                 444 (CI: 444 to 444)       
+#>  2 n_event           64.5 (CI: 51.48 to 76.1)   
+#>  3 n_non_event       379.5 (CI: 367.9 to 392.52)
+#>  4 Prevalence        0.15 (CI: 0.12 to 0.17)    
+#>  5 NRI_up_event      17.5 (CI: 11.95 to 27.52)  
+#>  6 NRI_up_nonevent   95 (CI: 75.42 to 105.05)   
+#>  7 NRI_down_event    5 (CI: 1.95 to 11.05)      
+#>  8 NRI_down_nonevent 70.5 (CI: 58.9 to 78.05)   
+#>  9 NRI_event         0.2 (CI: 0.08 to 0.33)     
+#> 10 NRI_nonevent      -0.06 (CI: -0.11 to 0)
 ```
+
+

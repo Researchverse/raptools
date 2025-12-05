@@ -24,7 +24,13 @@ The raptools package contains functions for generating statistical metrics and v
 
 ## Installation
 
-You can install the development version of raptools from [GitHub](https://github.com/) with:
+You can install raptools from CRAN:
+
+``` r
+install.packages("raptools")
+```
+
+Or install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
