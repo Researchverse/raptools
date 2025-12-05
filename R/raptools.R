@@ -37,11 +37,11 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -175,11 +175,11 @@ ggdecision <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = 
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -364,11 +364,11 @@ ggroc <- function(x1, x2=NULL, y=NULL,  carrington_line = FALSE, costs = c(0,0,1
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -537,11 +537,11 @@ ggprerec <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = "l
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -707,11 +707,11 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, 
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -862,11 +862,11 @@ ggcalibrate_original <- function(x1, x2 = NULL, y = NULL, n_cut = 5,
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -1020,11 +1020,11 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
@@ -1152,11 +1152,11 @@ ggdecision <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = 
     x2 = stats::predict(x2, type = "response")
   }
   if (class(x1)[1] == "lrm") {
-    x1 = stats::predict(x1, type = "fitted")
     if (length(x1$y) == 0 ) {
       stop("Fitted models with the rms package must be made using y = TRUE")
     }
-    y = x1$as.numeric(as.character(x1$y))
+    y = as.numeric(as.character(x1$y))
+    x1 = stats::predict(x1, type = "fitted")
     data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
