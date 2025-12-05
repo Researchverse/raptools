@@ -9,6 +9,8 @@ logo: man/figures/logo.png
 
 home:
   title: "raptools: Risk Assessment Plot and Reclassification Metrics"
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
   description: >
     Provides functions for assessing the comparative performance of two logistic regression models 
     or results of such models or classification models. Discrimination metrics include Integrated 
