@@ -1,5 +1,8 @@
 # raptools
 
+**John W Pickering**  
+*27 June 2023*
+
 The raptools package contains functions for generating statistical
 metrics and visual means to assess the improvement in risk prediction of
 one risk model over another. It includes the Risk Assessment Plot (hence
@@ -159,21 +162,21 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 #>    metric         statistics                  
 #>    <chr>          <chr>                       
 #>  1 n              433 (CI: 433 to 433)        
-#>  2 n_event        84.5 (CI: 73.47 to 98.53)   
-#>  3 n_non_event    348.5 (CI: 334.48 to 359.52)
-#>  4 Prevalence     0.2 (CI: 0.17 to 0.23)      
-#>  5 IDI_event      0.15 (CI: 0.11 to 0.19)     
-#>  6 IDI_nonevent   0.04 (CI: 0.02 to 0.05)     
-#>  7 IP_baseline    0.19 (CI: 0.18 to 0.19)     
-#>  8 IS_baseline    0.25 (CI: 0.23 to 0.28)     
-#>  9 IP_new         0.15 (CI: 0.13 to 0.16)     
-#> 10 IS_new         0.4 (CI: 0.36 to 0.46)      
-#> 11 Brier_baseline 0.15 (CI: 0.14 to 0.17)     
-#> 12 Brier_new      0.12 (CI: 0.1 to 0.13)      
-#> 13 Brier_skill    19.72 (CI: 14.68 to 28.95)  
-#> 14 AUC_baseline   0.68 (CI: 0.62 to 0.75)     
-#> 15 AUC_new        0.83 (CI: 0.79 to 0.88)     
-#> 16 AUC_difference 0.16 (CI: 0.12 to 0.2)
+#>  2 n_event        84.5 (CI: 75.95 to 100.62)  
+#>  3 n_non_event    348.5 (CI: 332.38 to 357.05)
+#>  4 Prevalence     0.2 (CI: 0.18 to 0.23)      
+#>  5 IDI_event      0.14 (CI: 0.09 to 0.17)     
+#>  6 IDI_nonevent   0.04 (CI: 0.03 to 0.04)     
+#>  7 IP_baseline    0.19 (CI: 0.17 to 0.2)      
+#>  8 IS_baseline    0.26 (CI: 0.23 to 0.28)     
+#>  9 IP_new         0.15 (CI: 0.14 to 0.16)     
+#> 10 IS_new         0.39 (CI: 0.36 to 0.43)     
+#> 11 Brier_baseline 0.15 (CI: 0.13 to 0.17)     
+#> 12 Brier_new      0.12 (CI: 0.11 to 0.14)     
+#> 13 Brier_skill    17.44 (CI: 13.53 to 24.93)  
+#> 14 AUC_baseline   0.69 (CI: 0.65 to 0.75)     
+#> 15 AUC_new        0.83 (CI: 0.81 to 0.86)     
+#> 16 AUC_difference 0.14 (CI: 0.1 to 0.18)
 ```
 
 ## Graphical assessments
@@ -345,16 +348,16 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
 #> # A tibble: 10 × 2
-#>    metric            statistics               
-#>    <chr>             <chr>                    
-#>  1 n                 444 (CI: 444 to 444)     
-#>  2 n_event           62 (CI: 51.9 to 75.53)   
-#>  3 n_non_event       382 (CI: 368.48 to 392.1)
-#>  4 Prevalence        0.14 (CI: 0.12 to 0.17)  
-#>  5 NRI_up_event      21.5 (CI: 15.38 to 29.57)
-#>  6 NRI_up_nonevent   92.5 (CI: 77.18 to 111.3)
-#>  7 NRI_down_event    5 (CI: 2.48 to 10.52)    
-#>  8 NRI_down_nonevent 69 (CI: 57 to 87.3)      
-#>  9 NRI_event         0.28 (CI: 0.12 to 0.34)  
-#> 10 NRI_nonevent      -0.06 (CI: -0.13 to 0.01)
+#>    metric            statistics                  
+#>    <chr>             <chr>                       
+#>  1 n                 444 (CI: 444 to 444)        
+#>  2 n_event           59.5 (CI: 51.48 to 76.05)   
+#>  3 n_non_event       384.5 (CI: 367.95 to 392.52)
+#>  4 Prevalence        0.13 (CI: 0.12 to 0.17)     
+#>  5 NRI_up_event      19.5 (CI: 12.48 to 26.15)   
+#>  6 NRI_up_nonevent   94 (CI: 83.47 to 107.62)    
+#>  7 NRI_down_event    5 (CI: 2 to 9)              
+#>  8 NRI_down_nonevent 72.5 (CI: 60.48 to 84.57)   
+#>  9 NRI_event         0.24 (CI: 0.12 to 0.3)      
+#> 10 NRI_nonevent      -0.05 (CI: -0.11 to -0.02)
 ```
