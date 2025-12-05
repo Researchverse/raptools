@@ -1,0 +1,56 @@
+name: CRAN Status Check
+
+on:
+  schedule:
+    # Run daily at 9am UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  cran-status:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check CRAN Status
+        run: |
+          echo "Checking CRAN status for raptools..."
+          
+          # Get CRAN check results
+          curl -s "https://cran.r-project.org/web/checks/check_results_raptools.html" > cran_results.html
+          
+          # Check if package has any ERRORs or WARNINGs
+          if grep -q "ERROR" cran_results.html; then
+            echo "::error::CRAN checks show ERRORs"
+            cat cran_results.html
+            exit 1
+          elif grep -q "WARNING" cran_results.html; then
+            echo "::warning::CRAN checks show WARNINGs"
+            cat cran_results.html
+          else
+            echo "✅ All CRAN checks passing"
+          fi
+          
+      - name: Check CRAN Package Status
+        run: |
+          echo "Checking if package is available on CRAN..."
+          
+          # Check package page exists
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://cran.r-project.org/package=raptools")
+          
+          if [ "$STATUS" -eq 200 ]; then
+            echo "✅ Package is available on CRAN"
+            
+            # Get package version from CRAN
+            curl -s "https://cran.r-project.org/package=raptools" | \
+              grep -oP '(?<=<td>Version:</td>\s<td>)[^<]+' || echo "Could not parse version"
+          else
+            echo "::warning::Package not found on CRAN or CRAN is unavailable"
+          fi
+          
+      - name: Check Incoming
+        run: |
+          echo "Checking CRAN incoming..."
+          
+          # Check if package is in CRAN incoming (new submissions or updates)
+          curl -s "https://cran.r-project.org/incoming/" | \
+            grep -i "raptools" || echo "No pending submissions in CRAN incoming"
