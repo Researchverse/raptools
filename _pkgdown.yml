@@ -22,7 +22,7 @@ home:
 navbar:
   logo:
     image: man/figures/logo.png
-    href: https://researchverse.github.io/raptools/
+    href: https://github.com/Researchverse/raptools/
   structure:
     left:  [home, reference, articles, tutorials, news]
     right: [search, github]
