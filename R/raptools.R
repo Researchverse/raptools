@@ -153,6 +153,10 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
 #' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
+#' @param show_smooth Logical, whether to display smoothed curves (default = TRUE)
+#' @param smooth_method Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"
+#' @param smooth_span Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth
+#' @param smooth_se Logical, whether to display confidence interval around smooth (default = FALSE)
 #' @return a ggplot 
 #' @references Vickers AJ, van Calster B, Steyerberg EW. A simple, step-by-step guide to interpreting decision curve analysis. Diagn Progn Res 2019;3(1):18. 2. Zhang Z, Rousson V, Lee W-C, et al. Decision curve analysis: a technical note. Ann Transl Med 2018;6(15):308-308. 
 #' @import ggplot2
@@ -160,7 +164,7 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
 #' @import dplyr
 #' @export
 #'
-ggdecision <- function(x1, x2=NULL, y=NULL) {
+ggdecision <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = "loess", smooth_span = 0.75, smooth_se = FALSE) {
   
   if (class(x1)[1] == "glm") {
     y = x1$y
@@ -315,8 +319,14 @@ ggdecision <- function(x1, x2=NULL, y=NULL) {
   g <- ggplot() + 
     scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) + 
     scale_y_continuous( expand = c(0.005,0.005)) + 
-    geom_point(data = benefit, aes(x = Prediction, y = treated, colour = Model), alpha = 0.3, size = 0.5) + 
-    geom_smooth(data = benefit, aes(x = Prediction, y = treated, colour = Model), se = FALSE) + 
+    geom_point(data = benefit, aes(x = Prediction, y = treated, colour = Model), alpha = 0.3, size = 0.5)
+  
+  if (show_smooth) {
+    g <- g + geom_smooth(data = benefit, aes(x = Prediction, y = treated, colour = Model), 
+                         method = smooth_method, span = smooth_span, se = smooth_se)
+  }
+  
+  g <- g + 
     geom_line(data = benefit_all_none, aes(x = Prediction, y = extremes, linetype = `Extreme models`)) +
     ylab("Net benefit") + xlab("Prediction threshold") +
     coord_cartesian(ylim = c(1.5 * min(benefit$treated), 1.05 * incidence/100)) +
@@ -506,13 +516,17 @@ ggroc <- function(x1, x2=NULL, y=NULL,  carrington_line = FALSE, costs = c(0,0,1
 #' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or alculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
+#' @param show_smooth Logical, whether to display smoothed curves (default = TRUE)
+#' @param smooth_method Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"
+#' @param smooth_span Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth
+#' @param smooth_se Logical, whether to display confidence interval around smooth (default = FALSE)
 #' @return A ggplot object displaying the precision-recall curve(s) with recall (sensitivity) on the x-axis and precision (positive predictive value) on the y-axis. If two models are provided, both curves are shown for comparison.
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr
 #' @export
 #'
-ggprerec <- function(x1, x2=NULL, y=NULL) {
+ggprerec <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = "loess", smooth_span = 0.75, smooth_se = FALSE) {
   
   if (class(x1)[1] == "glm") {
     y = x1$y
@@ -628,8 +642,14 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
   g <- ggplot(data = pr_df) + 
     scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) + 
     scale_y_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005))  +
-    geom_point(aes(x = sens, y = ppv, colour = Model), alpha = 0.3, size = 0.5) +
-    geom_smooth(aes(x = sens, y = ppv, colour = Model), se = FALSE) + 
+    geom_point(aes(x = sens, y = ppv, colour = Model), alpha = 0.3, size = 0.5)
+  
+  if (show_smooth) {
+    g <- g + geom_smooth(aes(x = sens, y = ppv, colour = Model), 
+                         method = smooth_method, span = smooth_span, se = smooth_se)
+  }
+  
+  g <- g + 
     ylab("Precision (PPV)") + xlab("Recall (Sensitivity)") +
     coord_cartesian(ylim = c(0,1), xlim = c(0,1)) +
     NULL
@@ -646,6 +666,8 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
 #' @param n_knots The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.  
 #' @param ci_level Confidence interval of the curve (default = 0.95).  
+#' @param smooth_method Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"
+#' @param smooth_span Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth
 #' @return a ggplot
 #' @examples
 #' # Quick example with subset of data
@@ -674,7 +696,7 @@ ggprerec <- function(x1, x2=NULL, y=NULL) {
 #' @import dplyr
 #' @importFrom pracma trapz
 #' @export
-ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
+ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, smooth_method = "loess", smooth_span = 0.75) {
   
   if (class(x1)[1] == "glm") {
     y = x1$y
@@ -763,7 +785,7 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
     scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) + 
     scale_y_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) +
     geom_abline(slope = 1, intercept = 0, colour = "grey50", linetype = "dashed")  +
-    geom_smooth(se = TRUE, level = ci_level) +
+    geom_smooth(method = smooth_method, span = smooth_span, se = TRUE, level = ci_level) +
     xlab("Predicted percentage") +
     ylab("Actual percentage") +
     coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
@@ -1108,6 +1130,10 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
 #' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
 #' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
 #' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
+#' @param show_smooth Logical, whether to display smoothed curves (default = TRUE)
+#' @param smooth_method Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"
+#' @param smooth_span Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth
+#' @param smooth_se Logical, whether to display confidence interval around smooth (default = FALSE)
 #' @return a ggplot 
 #' @references Vickers AJ, van Calster B, Steyerberg EW. A simple, step-by-step guide to interpreting decision curve analysis. Diagn Progn Res 2019;3(1):18. 2. Zhang Z, Rousson V, Lee W-C, et al. Decision curve analysis: a technical note. Ann Transl Med 2018;6(15):308–308. 
 #' @import ggplot2
@@ -1115,7 +1141,7 @@ ggrap <- function(x1, x2=NULL, y=NULL) {
 #' @import dplyr
 #' @export
 #'
-ggdecision <- function(x1, x2=NULL, y=NULL) {
+ggdecision <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = "loess", smooth_span = 0.75, smooth_se = FALSE) {
   
   if (class(x1)[1] == "glm") {
     y = x1$y
@@ -1266,8 +1292,14 @@ ggdecision <- function(x1, x2=NULL, y=NULL) {
   g <- ggplot() + 
     scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) + 
     scale_y_continuous( expand = c(0.005,0.005)) + 
-    geom_point(data = benefit, aes(x = Prediction, y = treated, colour = Model), alpha = 0.3, size = 0.5) + 
-    geom_smooth(data = benefit, aes(x = Prediction, y = treated, colour = Model), se = FALSE) + 
+    geom_point(data = benefit, aes(x = Prediction, y = treated, colour = Model), alpha = 0.3, size = 0.5)
+  
+  if (show_smooth) {
+    g <- g + geom_smooth(data = benefit, aes(x = Prediction, y = treated, colour = Model), 
+                         method = smooth_method, span = smooth_span, se = smooth_se)
+  }
+  
+  g <- g + 
     geom_line(data = benefit_all_none, aes(x = Prediction, y = extremes, linetype = `Extreme models`)) +
     ylab("Net benefit") + xlab("Prediction threshold") +
     coord_cartesian(ylim = c(1.5 * min(benefit$treated), 1.05 * incidence/100)) +
