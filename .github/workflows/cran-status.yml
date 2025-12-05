@@ -21,13 +21,22 @@ jobs:
         with:
           use-public-rspm: true
           
-      - name: Install cchecks
+      - name: Install dependencies
         run: |
           install.packages(c("cchecks", "dplyr", "tibble"))
+          cat("Installed packages:\n")
+          print(installed.packages()[,c("Package", "Version")])
         shell: Rscript {0}
         
       - name: Check CRAN Status
         run: |
+          if (!require("cchecks", quietly = TRUE)) {
+            stop("cchecks package not installed")
+          }
+          if (!require("dplyr", quietly = TRUE)) {
+            stop("dplyr package not installed")
+          }
+          
           library(cchecks)
           library(dplyr)
           
