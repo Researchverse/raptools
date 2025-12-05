@@ -179,21 +179,21 @@
 <span><span class="co">#&gt;    metric         statistics                  </span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;                       </span></span>
 <span><span class="co">#&gt;  1 n              433 (CI: 433 to 433)        </span></span>
-<span><span class="co">#&gt;  2 n_event        84.5 (CI: 75.95 to 100.62)  </span></span>
-<span><span class="co">#&gt;  3 n_non_event    348.5 (CI: 332.38 to 357.05)</span></span>
-<span><span class="co">#&gt;  4 Prevalence     0.2 (CI: 0.18 to 0.23)      </span></span>
-<span><span class="co">#&gt;  5 IDI_event      0.14 (CI: 0.09 to 0.17)     </span></span>
-<span><span class="co">#&gt;  6 IDI_nonevent   0.04 (CI: 0.03 to 0.04)     </span></span>
-<span><span class="co">#&gt;  7 IP_baseline    0.19 (CI: 0.17 to 0.2)      </span></span>
-<span><span class="co">#&gt;  8 IS_baseline    0.26 (CI: 0.23 to 0.28)     </span></span>
+<span><span class="co">#&gt;  2 n_event        87.5 (CI: 69.47 to 98.57)   </span></span>
+<span><span class="co">#&gt;  3 n_non_event    345.5 (CI: 334.42 to 363.52)</span></span>
+<span><span class="co">#&gt;  4 Prevalence     0.2 (CI: 0.16 to 0.23)      </span></span>
+<span><span class="co">#&gt;  5 IDI_event      0.13 (CI: 0.09 to 0.16)     </span></span>
+<span><span class="co">#&gt;  6 IDI_nonevent   0.03 (CI: 0.03 to 0.04)     </span></span>
+<span><span class="co">#&gt;  7 IP_baseline    0.19 (CI: 0.18 to 0.19)     </span></span>
+<span><span class="co">#&gt;  8 IS_baseline    0.25 (CI: 0.23 to 0.27)     </span></span>
 <span><span class="co">#&gt;  9 IP_new         0.15 (CI: 0.14 to 0.16)     </span></span>
-<span><span class="co">#&gt; 10 IS_new         0.39 (CI: 0.36 to 0.43)     </span></span>
+<span><span class="co">#&gt; 10 IS_new         0.38 (CI: 0.34 to 0.42)     </span></span>
 <span><span class="co">#&gt; 11 Brier_baseline 0.15 (CI: 0.13 to 0.17)     </span></span>
-<span><span class="co">#&gt; 12 Brier_new      0.12 (CI: 0.11 to 0.14)     </span></span>
-<span><span class="co">#&gt; 13 Brier_skill    17.44 (CI: 13.53 to 24.93)  </span></span>
-<span><span class="co">#&gt; 14 AUC_baseline   0.69 (CI: 0.65 to 0.75)     </span></span>
-<span><span class="co">#&gt; 15 AUC_new        0.83 (CI: 0.81 to 0.86)     </span></span>
-<span><span class="co">#&gt; 16 AUC_difference 0.14 (CI: 0.1 to 0.18)</span></span></code></pre></div>
+<span><span class="co">#&gt; 12 Brier_new      0.13 (CI: 0.11 to 0.14)     </span></span>
+<span><span class="co">#&gt; 13 Brier_skill    15.1 (CI: 9.34 to 23.13)    </span></span>
+<span><span class="co">#&gt; 14 AUC_baseline   0.67 (CI: 0.63 to 0.74)     </span></span>
+<span><span class="co">#&gt; 15 AUC_new        0.81 (CI: 0.77 to 0.85)     </span></span>
+<span><span class="co">#&gt; 16 AUC_difference 0.14 (CI: 0.08 to 0.19)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="graphical-assessments">Graphical assessments<a class="anchor" aria-label="anchor" href="#graphical-assessments"></a>
@@ -364,18 +364,18 @@ plot of chunk ggcontribute
 <span><span class="co">## bootstrap derived metrics with confidence intervals  </span></span>
 <span><span class="op">(</span><span class="va">class_assessment</span><span class="op">$</span><span class="va">Summary_metrics</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 10 × 2</span></span>
-<span><span class="co">#&gt;    metric            statistics                  </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;                       </span></span>
-<span><span class="co">#&gt;  1 n                 444 (CI: 444 to 444)        </span></span>
-<span><span class="co">#&gt;  2 n_event           59.5 (CI: 51.48 to 76.05)   </span></span>
-<span><span class="co">#&gt;  3 n_non_event       384.5 (CI: 367.95 to 392.52)</span></span>
-<span><span class="co">#&gt;  4 Prevalence        0.13 (CI: 0.12 to 0.17)     </span></span>
-<span><span class="co">#&gt;  5 NRI_up_event      19.5 (CI: 12.48 to 26.15)   </span></span>
-<span><span class="co">#&gt;  6 NRI_up_nonevent   94 (CI: 83.47 to 107.62)    </span></span>
-<span><span class="co">#&gt;  7 NRI_down_event    5 (CI: 2 to 9)              </span></span>
-<span><span class="co">#&gt;  8 NRI_down_nonevent 72.5 (CI: 60.48 to 84.57)   </span></span>
-<span><span class="co">#&gt;  9 NRI_event         0.24 (CI: 0.12 to 0.3)      </span></span>
-<span><span class="co">#&gt; 10 NRI_nonevent      -0.05 (CI: -0.11 to -0.02)</span></span></code></pre></div>
+<span><span class="co">#&gt;    metric            statistics                </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;                     </span></span>
+<span><span class="co">#&gt;  1 n                 444 (CI: 444 to 444)      </span></span>
+<span><span class="co">#&gt;  2 n_event           63.5 (CI: 53.9 to 76)     </span></span>
+<span><span class="co">#&gt;  3 n_non_event       380.5 (CI: 368 to 390.1)  </span></span>
+<span><span class="co">#&gt;  4 Prevalence        0.14 (CI: 0.12 to 0.17)   </span></span>
+<span><span class="co">#&gt;  5 NRI_up_event      22 (CI: 15 to 28)         </span></span>
+<span><span class="co">#&gt;  6 NRI_up_nonevent   95.5 (CI: 84.47 to 104.05)</span></span>
+<span><span class="co">#&gt;  7 NRI_down_event    4 (CI: 1.48 to 7.52)      </span></span>
+<span><span class="co">#&gt;  8 NRI_down_nonevent 71 (CI: 53.85 to 77)      </span></span>
+<span><span class="co">#&gt;  9 NRI_event         0.27 (CI: 0.13 to 0.42)   </span></span>
+<span><span class="co">#&gt; 10 NRI_nonevent      -0.06 (CI: -0.13 to -0.02)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
