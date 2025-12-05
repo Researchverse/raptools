@@ -21,3 +21,7 @@
 # GitHub Actions and pkgdown configuration
 ^\.github$
 ^_pkgdown\.yml$
+
+# Development files
+^plots$
+^hexsticker$
