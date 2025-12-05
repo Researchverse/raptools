@@ -4,7 +4,15 @@
 \alias{ggcalibrate}
 \title{The Calibration plot}
 \usage{
-ggcalibrate(x1, x2 = NULL, y = NULL, n_knots = 5, ci_level = 0.95)
+ggcalibrate(
+  x1,
+  x2 = NULL,
+  y = NULL,
+  n_knots = 5,
+  ci_level = 0.95,
+  smooth_method = "loess",
+  smooth_span = 0.75
+)
 }
 \arguments{
 \item{x1}{Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1}
@@ -16,6 +24,10 @@ ggcalibrate(x1, x2 = NULL, y = NULL, n_knots = 5, ci_level = 0.95)
 \item{n_knots}{The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.}
 
 \item{ci_level}{Confidence interval of the curve (default = 0.95).}
+
+\item{smooth_method}{Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"}
+
+\item{smooth_span}{Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth}
 }
 \value{
 a ggplot
