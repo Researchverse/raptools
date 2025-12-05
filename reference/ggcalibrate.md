@@ -6,7 +6,15 @@ rate
 ## Usage
 
 ``` r
-ggcalibrate(x1, x2 = NULL, y = NULL, n_knots = 5, ci_level = 0.95)
+ggcalibrate(
+  x1,
+  x2 = NULL,
+  y = NULL,
+  n_knots = 5,
+  ci_level = 0.95,
+  smooth_method = "loess",
+  smooth_span = 0.75
+)
 ```
 
 ## Arguments
@@ -38,6 +46,16 @@ ggcalibrate(x1, x2 = NULL, y = NULL, n_knots = 5, ci_level = 0.95)
 - ci_level:
 
   Confidence interval of the curve (default = 0.95).
+
+- smooth_method:
+
+  Smoothing method for geom_smooth. Options: "loess", "lm", "glm",
+  "gam". Default is "loess"
+
+- smooth_span:
+
+  Span parameter for loess smoothing, controls the degree of smoothing
+  (default = 0.75). Lower values = less smooth
 
 ## Value
 
