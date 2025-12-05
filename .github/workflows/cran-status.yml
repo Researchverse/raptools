@@ -11,46 +11,61 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - uses: actions/checkout@v4
+      
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+          
+      - name: Install cchecks
+        run: |
+          install.packages(c("cchecks", "dplyr", "tibble"))
+        shell: Rscript {0}
+        
       - name: Check CRAN Status
         run: |
-          echo "Checking CRAN status for raptools..."
+          library(cchecks)
+          library(dplyr)
           
           # Get CRAN check results
-          curl -s "https://cran.r-project.org/web/checks/check_results_raptools.html" > cran_results.html
+          results <- cch_pkgs("raptools")
           
-          # Check if package has any ERRORs or WARNINGs
-          if grep -q "ERROR" cran_results.html; then
-            echo "::error::CRAN checks show ERRORs"
-            cat cran_results.html
-            exit 1
-          elif grep -q "WARNING" cran_results.html; then
-            echo "::warning::CRAN checks show WARNINGs"
-            cat cran_results.html
-          else
-            echo "✅ All CRAN checks passing"
-          fi
+          if (is.null(results) || length(results$data) == 0) {
+            message("Package not found on CRAN or no check results available")
+            quit(status = 0)
+          }
           
-      - name: Check CRAN Package Status
-        run: |
-          echo "Checking if package is available on CRAN..."
+          checks <- results$data$checks[[1]]
           
-          # Check package page exists
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://cran.r-project.org/package=raptools")
+          # Count statuses
+          status_summary <- checks %>%
+            count(status) %>%
+            arrange(desc(n))
           
-          if [ "$STATUS" -eq 200 ]; then
-            echo "✅ Package is available on CRAN"
-            
-            # Get package version from CRAN
-            curl -s "https://cran.r-project.org/package=raptools" | \
-              grep -oP '(?<=<td>Version:</td>\s<td>)[^<]+' || echo "Could not parse version"
-          else
-            echo "::warning::Package not found on CRAN or CRAN is unavailable"
-          fi
+          cat("\n=== CRAN Check Summary ===", "\n")
+          print(status_summary)
           
-      - name: Check Incoming
-        run: |
-          echo "Checking CRAN incoming..."
+          # Check for ERRORs
+          if (any(checks$status == "ERROR")) {
+            error_checks <- checks %>% filter(status == "ERROR")
+            cat("\n::error::CRAN checks show ERRORs on:", paste(error_checks$flavor, collapse=", "), "\n")
+            quit(status = 1)
+          }
           
-          # Check if package is in CRAN incoming (new submissions or updates)
-          curl -s "https://cran.r-project.org/incoming/" | \
-            grep -i "raptools" || echo "No pending submissions in CRAN incoming"
+          # Check for WARNINGs
+          if (any(checks$status == "WARN")) {
+            warn_checks <- checks %>% filter(status == "WARN")
+            cat("\n::warning::CRAN checks show WARNINGs on:", paste(warn_checks$flavor, collapse=", "), "\n")
+          }
+          
+          # Check for NOTEs
+          if (any(checks$status == "NOTE")) {
+            note_checks <- checks %>% filter(status == "NOTE")
+            cat("\nNOTEs on:", paste(note_checks$flavor, collapse=", "), "\n")
+          }
+          
+          # Success message
+          if (all(checks$status == "OK")) {
+            cat("\n✅ All CRAN checks passing!\n")
+          }
+        shell: Rscript {0}
