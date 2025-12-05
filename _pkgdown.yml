@@ -13,6 +13,9 @@ home:
     Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Difference in AUCs, 
     Brier scores and Brier skill. Plots include Risk Assessment Plots, Decision curves and 
     Calibration plots.
+  links:
+  - text: Browse source code
+    href: https://github.com/Researchverse/raptools
 
 navbar:
   structure:
