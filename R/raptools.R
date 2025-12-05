@@ -826,6 +826,11 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level=0.95) {
 ggcalibrate_original <- function(x1, x2 = NULL, y = NULL, n_cut = 5, 
                                  cut_type = c("interval","number","width"), include_margin = FALSE) {
   
+  # Default to "interval" if cut_type not specified
+  if (length(cut_type) > 1) {
+    cut_type <- "interval"
+  }
+  
   if (class(x1)[1] == "glm") {
     y = x1$y
     x1 = stats::predict(x1, type = "response")
