@@ -15,71 +15,50 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-          
-      - name: Install dependencies
-        run: |
-          options(repos = c(CRAN = "https://cloud.r-project.org"))
-          pkgs <- c("cchecks", "dplyr", "tibble")
-          install.packages(pkgs, dependencies = TRUE)
-          
-          # Verify installation
-          for (pkg in pkgs) {
-            if (!requireNamespace(pkg, quietly = TRUE)) {
-              stop(sprintf("Failed to install package: %s", pkg))
-            }
-          }
-          cat("✓ All packages installed successfully\n")
-        shell: Rscript {0}
-        
       - name: Check CRAN Status
         run: |
-          library(cchecks)
-          library(dplyr)
+          echo "Checking CRAN status for raptools..."
           
-          # Get CRAN check results
-          results <- cch_pkgs("raptools")
+          # Fetch CRAN check results JSON
+          curl -s "https://cran-checks-api.r-pkg.org/v1/package/raptools" > cran_status.json
           
-          if (is.null(results) || length(results$data) == 0) {
-            message("Package not found on CRAN or no check results available")
-            quit(status = 0)
-          }
+          # Check if package exists
+          if grep -q '"error"' cran_status.json; then
+            echo "❌ Package not found on CRAN or API unavailable"
+            cat cran_status.json
+            exit 1
+          fi
           
-          checks <- results$data$checks[[1]]
+          # Parse status
+          ERROR_COUNT=$(grep -o '"status":"ERROR"' cran_status.json | wc -l)
+          WARN_COUNT=$(grep -o '"status":"WARN"' cran_status.json | wc -l)
+          NOTE_COUNT=$(grep -o '"status":"NOTE"' cran_status.json | wc -l)
+          OK_COUNT=$(grep -o '"status":"OK"' cran_status.json | wc -l)
           
-          # Count statuses
-          status_summary <- checks %>%
-            count(status) %>%
-            arrange(desc(n))
+          echo ""
+          echo "=== CRAN Check Summary ==="
+          echo "OK:    $OK_COUNT"
+          echo "NOTE:  $NOTE_COUNT"
+          echo "WARN:  $WARN_COUNT"
+          echo "ERROR: $ERROR_COUNT"
+          echo ""
           
-          cat("\n=== CRAN Check Summary ===", "\n")
-          print(status_summary)
+          # Show details
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "::error::CRAN checks show $ERROR_COUNT ERROR(s)"
+            grep -A 5 '"status":"ERROR"' cran_status.json || true
+            exit 1
+          fi
           
-          # Check for ERRORs
-          if (any(checks$status == "ERROR")) {
-            error_checks <- checks %>% filter(status == "ERROR")
-            cat("\n::error::CRAN checks show ERRORs on:", paste(error_checks$flavor, collapse=", "), "\n")
-            quit(status = 1)
-          }
+          if [ "$WARN_COUNT" -gt 0 ]; then
+            echo "::warning::CRAN checks show $WARN_COUNT WARNING(s)"
+            grep -A 5 '"status":"WARN"' cran_status.json || true
+          fi
           
-          # Check for WARNINGs
-          if (any(checks$status == "WARN")) {
-            warn_checks <- checks %>% filter(status == "WARN")
-            cat("\n::warning::CRAN checks show WARNINGs on:", paste(warn_checks$flavor, collapse=", "), "\n")
-          }
+          if [ "$NOTE_COUNT" -gt 0 ]; then
+            echo "ℹ️ CRAN checks show $NOTE_COUNT NOTE(s)"
+          fi
           
-          # Check for NOTEs
-          if (any(checks$status == "NOTE")) {
-            note_checks <- checks %>% filter(status == "NOTE")
-            cat("\nNOTEs on:", paste(note_checks$flavor, collapse=", "), "\n")
-          }
-          
-          # Success message
-          if (all(checks$status == "OK")) {
-            cat("\n✅ All CRAN checks passing!\n")
-          }
-        shell: Rscript {0}
+          if [ "$ERROR_COUNT" -eq 0 ] && [ "$WARN_COUNT" -eq 0 ]; then
+            echo "✅ All CRAN checks passing!"
+          fi
