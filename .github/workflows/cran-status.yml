@@ -1,6 +1,10 @@
 name: CRAN Status Check
 
 on:
+  push:
+    branches: [main, master, devel]
+  pull_request:
+    branches: [main, master, devel]
   schedule:
     # Run daily at 9am UTC
     - cron: '0 9 * * *'
