@@ -156,24 +156,24 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 ## bootstrap derived metrics with confidence intervals  
 (assessment$Summary_metrics)
 #> # A tibble: 16 × 2
-#>    metric         statistics                
-#>    <chr>          <chr>                     
-#>  1 n              433 (CI: 433 to 433)      
-#>  2 n_event        84 (CI: 71.95 to 93.53)   
-#>  3 n_non_event    349 (CI: 339.48 to 361.05)
-#>  4 Prevalence     0.19 (CI: 0.17 to 0.22)   
-#>  5 IDI_event      0.14 (CI: 0.08 to 0.15)   
-#>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.04)   
-#>  7 IP_baseline    0.19 (CI: 0.18 to 0.2)    
-#>  8 IS_baseline    0.25 (CI: 0.22 to 0.27)   
-#>  9 IP_new         0.15 (CI: 0.14 to 0.16)   
-#> 10 IS_new         0.38 (CI: 0.32 to 0.42)   
-#> 11 Brier_baseline 0.15 (CI: 0.13 to 0.16)   
-#> 12 Brier_new      0.13 (CI: 0.1 to 0.14)    
-#> 13 Brier_skill    17.13 (CI: 9.92 to 22.73) 
-#> 14 AUC_baseline   0.66 (CI: 0.61 to 0.74)   
-#> 15 AUC_new        0.81 (CI: 0.77 to 0.86)   
-#> 16 AUC_difference 0.14 (CI: 0.09 to 0.21)
+#>    metric         statistics                  
+#>    <chr>          <chr>                       
+#>  1 n              433 (CI: 433 to 433)        
+#>  2 n_event        84.5 (CI: 73.47 to 98.53)   
+#>  3 n_non_event    348.5 (CI: 334.48 to 359.52)
+#>  4 Prevalence     0.2 (CI: 0.17 to 0.23)      
+#>  5 IDI_event      0.15 (CI: 0.11 to 0.19)     
+#>  6 IDI_nonevent   0.04 (CI: 0.02 to 0.05)     
+#>  7 IP_baseline    0.19 (CI: 0.18 to 0.19)     
+#>  8 IS_baseline    0.25 (CI: 0.23 to 0.28)     
+#>  9 IP_new         0.15 (CI: 0.13 to 0.16)     
+#> 10 IS_new         0.4 (CI: 0.36 to 0.46)      
+#> 11 Brier_baseline 0.15 (CI: 0.14 to 0.17)     
+#> 12 Brier_new      0.12 (CI: 0.1 to 0.13)      
+#> 13 Brier_skill    19.72 (CI: 14.68 to 28.95)  
+#> 14 AUC_baseline   0.68 (CI: 0.62 to 0.75)     
+#> 15 AUC_new        0.83 (CI: 0.79 to 0.88)     
+#> 16 AUC_difference 0.16 (CI: 0.12 to 0.2)
 ```
 
 ## Graphical assessments
@@ -345,16 +345,16 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
 #> # A tibble: 10 × 2
-#>    metric            statistics                 
-#>    <chr>             <chr>                      
-#>  1 n                 444 (CI: 444 to 444)       
-#>  2 n_event           64.5 (CI: 51.48 to 76.1)   
-#>  3 n_non_event       379.5 (CI: 367.9 to 392.52)
-#>  4 Prevalence        0.15 (CI: 0.12 to 0.17)    
-#>  5 NRI_up_event      17.5 (CI: 11.95 to 27.52)  
-#>  6 NRI_up_nonevent   95 (CI: 75.42 to 105.05)   
-#>  7 NRI_down_event    5 (CI: 1.95 to 11.05)      
-#>  8 NRI_down_nonevent 70.5 (CI: 58.9 to 78.05)   
-#>  9 NRI_event         0.2 (CI: 0.08 to 0.33)     
-#> 10 NRI_nonevent      -0.06 (CI: -0.11 to 0)
+#>    metric            statistics               
+#>    <chr>             <chr>                    
+#>  1 n                 444 (CI: 444 to 444)     
+#>  2 n_event           62 (CI: 51.9 to 75.53)   
+#>  3 n_non_event       382 (CI: 368.48 to 392.1)
+#>  4 Prevalence        0.14 (CI: 0.12 to 0.17)  
+#>  5 NRI_up_event      21.5 (CI: 15.38 to 29.57)
+#>  6 NRI_up_nonevent   92.5 (CI: 77.18 to 111.3)
+#>  7 NRI_down_event    5 (CI: 2.48 to 10.52)    
+#>  8 NRI_down_nonevent 69 (CI: 57 to 87.3)      
+#>  9 NRI_event         0.28 (CI: 0.12 to 0.34)  
+#> 10 NRI_nonevent      -0.06 (CI: -0.13 to 0.01)
 ```
