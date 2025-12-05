@@ -23,20 +23,21 @@ jobs:
           
       - name: Install dependencies
         run: |
-          install.packages(c("cchecks", "dplyr", "tibble"))
-          cat("Installed packages:\n")
-          print(installed.packages()[,c("Package", "Version")])
+          options(repos = c(CRAN = "https://cloud.r-project.org"))
+          pkgs <- c("cchecks", "dplyr", "tibble")
+          install.packages(pkgs, dependencies = TRUE)
+          
+          # Verify installation
+          for (pkg in pkgs) {
+            if (!requireNamespace(pkg, quietly = TRUE)) {
+              stop(sprintf("Failed to install package: %s", pkg))
+            }
+          }
+          cat("✓ All packages installed successfully\n")
         shell: Rscript {0}
         
       - name: Check CRAN Status
         run: |
-          if (!require("cchecks", quietly = TRUE)) {
-            stop("cchecks package not installed")
-          }
-          if (!require("dplyr", quietly = TRUE)) {
-            stop("dplyr package not installed")
-          }
-          
           library(cchecks)
           library(dplyr)
           
