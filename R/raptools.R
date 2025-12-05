@@ -786,8 +786,8 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, 
     scale_y_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) +
     geom_abline(slope = 1, intercept = 0, colour = "grey50", linetype = "dashed")  +
     geom_smooth(method = smooth_method, span = smooth_span, se = TRUE, level = ci_level) +
-    xlab("Predicted percentage") +
-    ylab("Actual percentage") +
+    xlab("Predicted probability") +
+    ylab("Actual probability") +
     coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
     NULL
   
