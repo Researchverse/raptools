@@ -5,6 +5,8 @@ template:
   params:
     bootswatch: flatly
 
+logo: man/figures/logo.png
+
 home:
   title: "raptools: Risk Assessment Plot and Reclassification Metrics"
   description: >
