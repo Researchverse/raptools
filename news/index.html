@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">raptools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.22.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,32 @@
       <small>Source: <a href="https://github.com/Researchverse/raptools/blob/devel/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.23.0" id="raptools-1230">raptools 1.23.0<a class="anchor" aria-label="anchor" href="#raptools-1230"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-and-enhancements-1-23-0">Bug fixes and enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-enhancements-1-23-0"></a></h3>
+<ul><li>Fixed <code><a href="../reference/ggcalibrate_original.html">ggcalibrate_original()</a></code> to default <code>cut_type</code> to “interval” when not specified</li>
+<li>Fixed <code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code> axis labels from “percentage” to “probability” (uses 0-1 scale)</li>
+<li>Implemented missing <code>ci_level</code> parameter in <code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code>’s geom_smooth</li>
+<li>Added flexible smoothing controls to <code><a href="../reference/ggdecision.html">ggdecision()</a></code>, <code><a href="../reference/ggprerec.html">ggprerec()</a></code>, and <code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code>:
+<ul><li>
+<code>show_smooth</code>: toggle smoothing line display</li>
+<li>
+<code>smooth_method</code>: choose smoothing method (“loess”, “gam”, etc.)</li>
+<li>
+<code>smooth_span</code>: control smoothing span (default 0.75)</li>
+<li>
+<code>smooth_se</code>: toggle confidence interval display</li>
+</ul></li>
+<li>Fixed critical bug in lrm() model handling across 10 function instances
+<ul><li>Corrected variable extraction order to prevent “object not found” errors</li>
+<li>Now properly extracts outcome variable before reassigning predictions</li>
+</ul></li>
+<li>Enhanced documentation with CRAN installation instructions</li>
+<li>Improved GitHub Pages integration with clickable logo</li>
+<li>All changes maintain backward compatibility with sensible defaults</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.22" id="raptools-122">raptools 1.22<a class="anchor" aria-label="anchor" href="#raptools-122"></a></h2>
 <div class="section level3">
