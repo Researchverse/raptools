@@ -49,10 +49,18 @@ Version 1.11:
 * changed behaviour to that "x2 = NULL" is possible for CI.raplot.  It has the effect of creating a model where every probability is 0.5.   
 * bug fix.  
 
-Version 1.22 (current):  
+Version 1.22:  
 * addition of ggcontribute graph.
 * changed from  geom_line to the geom_step for the ROC plot (because it represents the data better).   
 * bug fix.  
+
+Version 1.23 (current):  
+* fixed `ggcalibrate_original()` default parameter error when `cut_type` not specified.
+* fixed `ggcalibrate()` axis labels (changed from "percentage" to "probability" to match 0-1 scale).
+* fixed critical bug in lrm() model handling that caused errors when using Frank Harrell's rms::lrm() models.
+* implemented missing `ci_level` parameter in `ggcalibrate()`.
+* added flexible smoothing controls (`show_smooth`, `smooth_method`, `smooth_span`, `smooth_se`) to plotting functions.
+* all changes maintain backward compatibility with sensible defaults.  
 
 ## Example 1
 
@@ -142,21 +150,21 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 #>    metric         statistics                  
 #>    <chr>          <chr>                       
 #>  1 n              433 (CI: 433 to 433)        
-#>  2 n_event        87.5 (CI: 69.47 to 98.57)   
-#>  3 n_non_event    345.5 (CI: 334.42 to 363.52)
-#>  4 Prevalence     0.2 (CI: 0.16 to 0.23)      
-#>  5 IDI_event      0.13 (CI: 0.09 to 0.16)     
-#>  6 IDI_nonevent   0.03 (CI: 0.03 to 0.04)     
-#>  7 IP_baseline    0.19 (CI: 0.18 to 0.19)     
-#>  8 IS_baseline    0.25 (CI: 0.23 to 0.27)     
-#>  9 IP_new         0.15 (CI: 0.14 to 0.16)     
-#> 10 IS_new         0.38 (CI: 0.34 to 0.42)     
-#> 11 Brier_baseline 0.15 (CI: 0.13 to 0.17)     
-#> 12 Brier_new      0.13 (CI: 0.11 to 0.14)     
-#> 13 Brier_skill    15.1 (CI: 9.34 to 23.13)    
-#> 14 AUC_baseline   0.67 (CI: 0.63 to 0.74)     
-#> 15 AUC_new        0.81 (CI: 0.77 to 0.85)     
-#> 16 AUC_difference 0.14 (CI: 0.08 to 0.19)
+#>  2 n_event        85.5 (CI: 67.38 to 95.53)   
+#>  3 n_non_event    347.5 (CI: 337.48 to 365.62)
+#>  4 Prevalence     0.2 (CI: 0.16 to 0.22)      
+#>  5 IDI_event      0.14 (CI: 0.11 to 0.19)     
+#>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.04)     
+#>  7 IP_baseline    0.19 (CI: 0.18 to 0.2)      
+#>  8 IS_baseline    0.25 (CI: 0.24 to 0.27)     
+#>  9 IP_new         0.15 (CI: 0.14 to 0.17)     
+#> 10 IS_new         0.39 (CI: 0.36 to 0.45)     
+#> 11 Brier_baseline 0.15 (CI: 0.12 to 0.16)     
+#> 12 Brier_new      0.12 (CI: 0.1 to 0.14)      
+#> 13 Brier_skill    16.05 (CI: 9.17 to 26.4)    
+#> 14 AUC_baseline   0.69 (CI: 0.64 to 0.74)     
+#> 15 AUC_new        0.82 (CI: 0.78 to 0.88)     
+#> 16 AUC_difference 0.13 (CI: 0.1 to 0.19)
 ```
 
 ## Graphical assessments
@@ -332,18 +340,18 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
 #> # A tibble: 10 × 2
-#>    metric            statistics                
-#>    <chr>             <chr>                     
-#>  1 n                 444 (CI: 444 to 444)      
-#>  2 n_event           63.5 (CI: 53.9 to 76)     
-#>  3 n_non_event       380.5 (CI: 368 to 390.1)  
-#>  4 Prevalence        0.14 (CI: 0.12 to 0.17)   
-#>  5 NRI_up_event      22 (CI: 15 to 28)         
-#>  6 NRI_up_nonevent   95.5 (CI: 84.47 to 104.05)
-#>  7 NRI_down_event    4 (CI: 1.48 to 7.52)      
-#>  8 NRI_down_nonevent 71 (CI: 53.85 to 77)      
-#>  9 NRI_event         0.27 (CI: 0.13 to 0.42)   
-#> 10 NRI_nonevent      -0.06 (CI: -0.13 to -0.02)
+#>    metric            statistics               
+#>    <chr>             <chr>                    
+#>  1 n                 444 (CI: 444 to 444)     
+#>  2 n_event           61 (CI: 50.9 to 73)      
+#>  3 n_non_event       383 (CI: 371 to 393.1)   
+#>  4 Prevalence        0.14 (CI: 0.11 to 0.16)  
+#>  5 NRI_up_event      19 (CI: 10.48 to 27.05)  
+#>  6 NRI_up_nonevent   94 (CI: 78.7 to 108.57)  
+#>  7 NRI_down_event    5.5 (CI: 1.95 to 9.57)   
+#>  8 NRI_down_nonevent 70.5 (CI: 61.9 to 87.67) 
+#>  9 NRI_event         0.22 (CI: 0.1 to 0.46)   
+#> 10 NRI_nonevent      -0.05 (CI: -0.12 to 0.01)
 ```
 
 
