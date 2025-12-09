@@ -1,3 +1,22 @@
+# raptools 1.23.0
+
+## Bug fixes and enhancements
+
+* Fixed `ggcalibrate_original()` to default `cut_type` to "interval" when not specified
+* Fixed `ggcalibrate()` axis labels from "percentage" to "probability" (uses 0-1 scale)
+* Implemented missing `ci_level` parameter in `ggcalibrate()`'s geom_smooth
+* Added flexible smoothing controls to `ggdecision()`, `ggprerec()`, and `ggcalibrate()`:
+  - `show_smooth`: toggle smoothing line display
+  - `smooth_method`: choose smoothing method ("loess", "gam", etc.)
+  - `smooth_span`: control smoothing span (default 0.75)
+  - `smooth_se`: toggle confidence interval display
+* Fixed critical bug in lrm() model handling across 10 function instances
+  - Corrected variable extraction order to prevent "object not found" errors
+  - Now properly extracts outcome variable before reassigning predictions
+* Enhanced documentation with CRAN installation instructions
+* Improved GitHub Pages integration with clickable logo
+* All changes maintain backward compatibility with sensible defaults
+
 # raptools 1.22
 
 ## Major changes for CRAN submission

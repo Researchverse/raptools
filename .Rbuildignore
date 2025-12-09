@@ -21,6 +21,8 @@
 # GitHub Actions and pkgdown configuration
 ^\.github$
 ^_pkgdown\.yml$
+^docs$
+^pkgdown$
 
 # Development files
 ^plots$

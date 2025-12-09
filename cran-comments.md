@@ -1,7 +1,19 @@
-## Resubmission
+## Resubmission - Version 1.23.0
 
-This is a resubmission. In this version I have:
+This is a maintenance update with bug fixes and enhancements:
 
+### Bug fixes
+* Fixed `ggcalibrate_original()` default parameter error when `cut_type` not specified
+* Fixed `ggcalibrate()` axis labels (changed from "percentage" to "probability" to match 0-1 scale)
+* Fixed critical bug in lrm() model handling that caused errors when using Frank Harrell's rms::lrm() models
+* Implemented missing `ci_level` parameter in `ggcalibrate()`
+
+### Enhancements
+* Added flexible smoothing controls (`show_smooth`, `smooth_method`, `smooth_span`, `smooth_se`) to plotting functions
+* All changes maintain backward compatibility with sensible defaults
+* Improved documentation and examples
+
+### Previous submission (1.22.0)
 * Removed "Tools for" from the Description field in DESCRIPTION (now starts with "Assessing the...")
 * Unwrapped examples from `\donttest{}` by creating small toy examples that run in < 5 seconds:
   - Using first 100 rows of data instead of full 444 rows
