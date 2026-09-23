@@ -54,13 +54,18 @@ Version 1.22:
 * changed from  geom_line to the geom_step for the ROC plot (because it represents the data better).   
 * bug fix.  
 
-Version 1.23 (current):  
+Version 1.23:  
 * fixed `ggcalibrate_original()` default parameter error when `cut_type` not specified.
 * fixed `ggcalibrate()` axis labels (changed from "percentage" to "probability" to match 0-1 scale).
 * fixed critical bug in lrm() model handling that caused errors when using Frank Harrell's rms::lrm() models.
 * implemented missing `ci_level` parameter in `ggcalibrate()`.
 * added flexible smoothing controls (`show_smooth`, `smooth_method`, `smooth_span`, `smooth_se`) to plotting functions.
 * all changes maintain backward compatibility with sensible defaults.  
+
+Development version (to become 1.24):  
+* `ggcalibrate()` now shows the confidence interval of the calibration curve itself, rather than a smoothed band.
+* `ggcalibrate()` can show the actual events (`actuals = TRUE`) and the confidence interval shading can be set (`alpha_level`).
+* addition of `ggcalibrate_BA()`, a Bland-Altman style calibration plot.
 
 ## Example 1
 
@@ -146,25 +151,25 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 
 ## bootstrap derived metrics with confidence intervals  
 (assessment$Summary_metrics)
-#> # A tibble: 16 × 2
-#>    metric         statistics                  
-#>    <chr>          <chr>                       
-#>  1 n              433 (CI: 433 to 433)        
-#>  2 n_event        85.5 (CI: 67.38 to 95.53)   
-#>  3 n_non_event    347.5 (CI: 337.48 to 365.62)
-#>  4 Prevalence     0.2 (CI: 0.16 to 0.22)      
-#>  5 IDI_event      0.14 (CI: 0.11 to 0.19)     
-#>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.04)     
-#>  7 IP_baseline    0.19 (CI: 0.18 to 0.2)      
-#>  8 IS_baseline    0.25 (CI: 0.24 to 0.27)     
-#>  9 IP_new         0.15 (CI: 0.14 to 0.17)     
-#> 10 IS_new         0.39 (CI: 0.36 to 0.45)     
-#> 11 Brier_baseline 0.15 (CI: 0.12 to 0.16)     
-#> 12 Brier_new      0.12 (CI: 0.1 to 0.14)      
-#> 13 Brier_skill    16.05 (CI: 9.17 to 26.4)    
-#> 14 AUC_baseline   0.69 (CI: 0.64 to 0.74)     
-#> 15 AUC_new        0.82 (CI: 0.78 to 0.88)     
-#> 16 AUC_difference 0.13 (CI: 0.1 to 0.19)
+#> # A tibble: 16 x 2
+#>    metric         statistics                
+#>    <chr>          <chr>                     
+#>  1 n              433 (CI: 433 to 433)      
+#>  2 n_event        87.5 (CI: 71 to 100.67)   
+#>  3 n_non_event    345.5 (CI: 332.33 to 362) 
+#>  4 Prevalence     0.2 (CI: 0.16 to 0.23)    
+#>  5 IDI_event      0.14 (CI: 0.11 to 0.16)   
+#>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.05)   
+#>  7 IP_baseline    0.19 (CI: 0.17 to 0.19)   
+#>  8 IS_baseline    0.25 (CI: 0.24 to 0.26)   
+#>  9 IP_new         0.15 (CI: 0.13 to 0.17)   
+#> 10 IS_new         0.39 (CI: 0.35 to 0.42)   
+#> 11 Brier_baseline 0.16 (CI: 0.13 to 0.17)   
+#> 12 Brier_new      0.13 (CI: 0.11 to 0.14)   
+#> 13 Brier_skill    16.69 (CI: 10.65 to 25.38)
+#> 14 AUC_baseline   0.68 (CI: 0.63 to 0.71)   
+#> 15 AUC_new        0.82 (CI: 0.78 to 0.86)   
+#> 16 AUC_difference 0.14 (CI: 0.1 to 0.17)
 ```
 
 ## Graphical assessments
@@ -194,6 +199,41 @@ ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome)
 <div class="figure">
 <img src="man/figures/README-ggcalibrate-1.png" alt="plot of chunk ggcalibrate" width="100%" />
 <p class="caption">plot of chunk ggcalibrate</p>
+</div>
+
+The shaded areas are the 95% confidence intervals of each curve. To also show the actual events (0 or 1) against the predictions:
+
+``` r
+ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome, actuals = TRUE)
+```
+
+<div class="figure">
+<img src="man/figures/README-ggcalibrate_actuals-1.png" alt="plot of chunk ggcalibrate_actuals" width="100%" />
+<p class="caption">plot of chunk ggcalibrate_actuals</p>
+</div>
+
+### The Bland-Altman style calibration curve
+The same calibration curves, plotted as the deviation from the outcome (Actual - Prediction). Perfect calibration is the horizontal line at zero; above it the model under-predicts and below it the model over-predicts.
+
+``` r
+ggcalibrate_BA(x1 = baseline_risk, x2 = new_risk, y = outcome)
+```
+
+<div class="figure">
+<img src="man/figures/README-ggcalibrate_BA-1.png" alt="plot of chunk ggcalibrate_BA" width="100%" />
+<p class="caption">plot of chunk ggcalibrate_BA</p>
+</div>
+
+Zoom in on the predictions that matter, eg below 30%:
+
+``` r
+ggcalibrate_BA(x1 = baseline_risk, x2 = new_risk, y = outcome) +
+  ggplot2::coord_cartesian(xlim = c(0, 0.3), ylim = c(-0.3, 0.3))
+```
+
+<div class="figure">
+<img src="man/figures/README-ggcalibrate_BA_zoom-1.png" alt="plot of chunk ggcalibrate_BA_zoom" width="100%" />
+<p class="caption">plot of chunk ggcalibrate_BA_zoom</p>
 </div>
 
 ### The original calibration curve
@@ -339,19 +379,19 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
-#> # A tibble: 10 × 2
-#>    metric            statistics               
-#>    <chr>             <chr>                    
-#>  1 n                 444 (CI: 444 to 444)     
-#>  2 n_event           61 (CI: 50.9 to 73)      
-#>  3 n_non_event       383 (CI: 371 to 393.1)   
-#>  4 Prevalence        0.14 (CI: 0.11 to 0.16)  
-#>  5 NRI_up_event      19 (CI: 10.48 to 27.05)  
-#>  6 NRI_up_nonevent   94 (CI: 78.7 to 108.57)  
-#>  7 NRI_down_event    5.5 (CI: 1.95 to 9.57)   
-#>  8 NRI_down_nonevent 70.5 (CI: 61.9 to 87.67) 
-#>  9 NRI_event         0.22 (CI: 0.1 to 0.46)   
-#> 10 NRI_nonevent      -0.05 (CI: -0.12 to 0.01)
+#> # A tibble: 10 x 2
+#>    metric            statistics                
+#>    <chr>             <chr>                     
+#>  1 n                 444 (CI: 444 to 444)      
+#>  2 n_event           61 (CI: 47.33 to 75.62)   
+#>  3 n_non_event       383 (CI: 368.38 to 396.67)
+#>  4 Prevalence        0.14 (CI: 0.11 to 0.17)   
+#>  5 NRI_up_event      19 (CI: 13.48 to 28.52)   
+#>  6 NRI_up_nonevent   94 (CI: 77.28 to 115.35)  
+#>  7 NRI_down_event    4.5 (CI: 1 to 8.52)       
+#>  8 NRI_down_nonevent 69.5 (CI: 58.75 to 82.57) 
+#>  9 NRI_event         0.26 (CI: 0.14 to 0.42)   
+#> 10 NRI_nonevent      -0.06 (CI: -0.14 to -0.01)
 ```
 
 

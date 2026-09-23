@@ -10,7 +10,7 @@ globalVariables(c("Baseline", "New", "Event", "Model", "Probabilities", "ID",
                   "prevalence", "Extreme models", "extremes", "V1", "V2", "V3", "metric",
                   "statistics", "event", "up", "down", "n_up", "n_down", "nri",
                   "risk.class.x2", "risk.class.x1", "difference", "IDI", "mse_x1", "mse_x2",
-                  "brier_baseline", "brier_new"))
+                  "brier_baseline", "brier_new", "lci", "uci"))
 
 #' The Risk Assessment Plot
 #'
@@ -657,51 +657,17 @@ ggprerec <- function(x1, x2=NULL, y=NULL, show_smooth = TRUE, smooth_method = "l
   return(g)
 }
 
-#' The Calibration plot
-#' 
-#' ggcalibrate plots the stats::predicted events against the actual event rate
-#' 
-#' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
-#' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
-#' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE). 
-#' @param n_knots The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.  
-#' @param ci_level Confidence interval of the curve (default = 0.95).  
-#' @param smooth_method Smoothing method for geom_smooth. Options: "loess", "lm", "glm", "gam". Default is "loess"
-#' @param smooth_span Span parameter for loess smoothing, controls the degree of smoothing (default = 0.75). Lower values = less smooth
-#' @return a ggplot
-#' @examples
-#' # Quick example with subset of data
-#' data(data_risk)
-#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
-#' complete_cases <- complete.cases(data_subset)
-#' data_clean <- data_subset[complete_cases, ]
-#' y <- data_clean$outcome 
-#' x1 <- data_clean$baseline
-#' x2 <- data_clean$new
-#' output <- ggcalibrate(x1, x2, y, n_knots = 3, ci_level = 0.95)
-#' 
-#' \donttest{
-#' # Full dataset example
-#' data(data_risk)
-#' complete_cases <- complete.cases(data_risk)
-#' data_clean <- data_risk[complete_cases, ]
-#' y <- data_clean$outcome 
-#' x1 <- data_clean$baseline
-#' x2 <- data_clean$new
-#' output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95) 
-#' }
-#' @import forcats
-#' @import ggplot2
-#' @import tidyr
-#' @import dplyr
-#' @importFrom pracma trapz
-#' @export
-ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, smooth_method = "loess", smooth_span = 0.75) {
-  
+#' Prepare calibration inputs
+#'
+#' Extracts predictions and outcomes from fitted glm/lrm models (or uses the
+#' supplied vectors), checks them and drops incomplete cases. Used by
+#' ggcalibrate and ggcalibrate_BA.
+#' @noRd
+calibration_inputs <- function(x1, x2 = NULL, y = NULL) {
+
   if (class(x1)[1] == "glm") {
     y = x1$y
     x1 = stats::predict(x1, type = "response")
-    data_type = "glm"
   }
   if (class(x2)[1] == "glm") {
     x2 = stats::predict(x2, type = "response")
@@ -712,7 +678,6 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, 
     }
     y = as.numeric(as.character(x1$y))
     x1 = stats::predict(x1, type = "fitted")
-    data_type = "lrm"
   }
   if (class(x2)[1] == "lrm") {
     if (length(x2$y) == 0 ) {
@@ -720,80 +685,190 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, 
     }
     x2 = stats::predict(x2, type = "fitted")
   }
-  
-  if (class(x1)[1] != "glm"  & class(x1)[1] != "lrm" ) {
-    data_type = "User supplied"
-  }
+
   if (!is.null(x2) & length(x1) != length(x2))
-    stop("Reference (baseline) and New (Alt) model vectors must be the same length")
+    stop("Reference (baseline) and New (alternative) model vectors must be the same length")
   if (is.null(y))
     stop("Oops - there must be event data (y)")
-  
-  
-  
-  
-  # Two lines 
-  if(!is.null(x2)){
-    df <- data.frame(Baseline = x1, New = x2, Event = y)
-    
-    df$ID = seq(1,nrow(df),1)
-    
-    fit_baseline <- glm(Event ~ rms::rcs(Baseline, n_knots), data = df, family = "binomial")
-    df$calib_baseline <- stats::predict(fit_baseline, type = "response")
-    fit_new <- glm(Event ~ rms::rcs(New, n_knots), data = df, family = "binomial")
-    df$calib_new <-  stats::predict(fit_new, type = "response")
-    
-    df_long <- df |> 
-      tidyr::pivot_longer(cols = c(Baseline,New), values_to = "prediction", names_to = "Model") |> 
-      select(Model,Event, prediction) |> # or whatever your outcome and predictions are
-      #  mutate(prediction = 100 * as.numeric(prediction)) |>  # If prediction is in the 0-1 range I prefer it in the 0-100 range
-      filter(!is.na(prediction)) 
-    
-    temp_baseline <- df |> 
-      select(Baseline, New) |> 
-      tidyr::pivot_longer(cols = c(Baseline,New), values_to = "x", names_to = "Model")
-    
-    temp_new <- df |> 
-      select(calib_baseline, calib_new) |> 
-      tidyr::pivot_longer(cols = c(calib_baseline,calib_new), values_to = "y", names_to = "Model")
-    
-    df_calib <- bind_cols(temp_baseline,temp_new) |> 
-      rename(Model = "Model...1")
-  }
-  
-  # One line
-  if(is.null(x2)){
+
+  # Keep complete cases only, so both curves are fitted to the same patients
+  if (is.null(x2)) {
     df <- data.frame(Baseline = x1, Event = y)
-    df <- df  |>  
-      filter(!is.na(Baseline)) |> 
-      filter(!is.na(Event))
-    df$ID = seq(1,nrow(df),1)
-    
-    fit_baseline <- glm(Event ~ rms::rcs(Baseline, n_knots), data = df, family = "binomial")
-    df$calib_baseline <- stats::predict(fit_baseline, type = "response")
-    
-    df_calib <- df |> 
-      rename(x = "Baseline") |> 
-      rename(y = "calib_baseline") |> 
-      mutate(Model = "Baseline")
-    
-  }  
-  
-  
-  # Plot 
-  g <- ggplot(data = df_calib, aes(x=x,y=y, colour = Model )) + 
-    scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) + 
+  } else {
+    df <- data.frame(Baseline = x1, New = x2, Event = y)
+  }
+  df[stats::complete.cases(df), , drop = FALSE]
+}
+
+#' Calibration curve with confidence interval
+#'
+#' Fits a logistic regression of the outcome on a restricted cubic spline of
+#' the prediction. The confidence interval is calculated on the log-odds scale
+#' and back-transformed, so it always lies between 0 and 1.
+#' @noRd
+calibration_curve <- function(prediction, event, model, n_knots, ci_level) {
+
+  fit <- glm(event ~ rms::rcs(prediction, n_knots), family = "binomial")
+  lp <- stats::predict(fit, type = "link", se.fit = TRUE)
+  z <- stats::qnorm(ci_level + (1 - ci_level)/2)
+
+  data.frame(Model = model,
+             x = prediction,
+             y = stats::plogis(lp$fit),
+             lci = stats::plogis(lp$fit - z * lp$se.fit),
+             uci = stats::plogis(lp$fit + z * lp$se.fit),
+             Event = event)
+}
+
+#' Calibration curves for the baseline and (optionally) new model
+#' @noRd
+calibration_curves <- function(df, n_knots, ci_level) {
+
+  curves <- calibration_curve(df$Baseline, df$Event, "Baseline", n_knots, ci_level)
+  if ("New" %in% names(df)) {
+    curves <- bind_rows(curves,
+                        calibration_curve(df$New, df$Event, "New", n_knots, ci_level))
+  }
+  curves
+}
+
+#' The Calibration plot
+#'
+#' ggcalibrate plots the stats::predicted events against the actual event rate
+#'
+#' The calibration curve for each model is a logistic regression of the outcome on a restricted cubic spline of the predicted probability. The confidence interval is calculated from the standard error of that fit on the log-odds scale and back-transformed, so it is bounded by 0 and 1.
+#'
+#' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
+#' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
+#' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE).
+#' @param n_knots The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.
+#' @param ci_level Confidence interval of the curve (default = 0.95).
+#' @param alpha_level Transparency (alpha) of the shaded confidence interval (default = 0.25).
+#' @param actuals Logical, whether to also plot the actual events (0 or 1) against the predictions (default = FALSE).
+#' @param smooth_method Deprecated and ignored. The curves are no longer drawn with geom_smooth().
+#' @param smooth_span Deprecated and ignored. The curves are no longer drawn with geom_smooth().
+#' @return a ggplot
+#' @seealso [ggcalibrate_BA()] for the same curves plotted as deviations from perfect calibration.
+#' @examples
+#' # Quick example with subset of data
+#' data(data_risk)
+#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+#' complete_cases <- complete.cases(data_subset)
+#' data_clean <- data_subset[complete_cases, ]
+#' y <- data_clean$outcome
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate(x1, x2, y, n_knots = 3, ci_level = 0.95)
+#'
+#' \donttest{
+#' # Full dataset example
+#' data(data_risk)
+#' complete_cases <- complete.cases(data_risk)
+#' data_clean <- data_risk[complete_cases, ]
+#' y <- data_clean$outcome
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95)
+#'
+#' # Show the actual events and a darker confidence interval
+#' output <- ggcalibrate(x1, x2, y, alpha_level = 0.5, actuals = TRUE)
+#' }
+#' @import forcats
+#' @import ggplot2
+#' @import tidyr
+#' @import dplyr
+#' @importFrom pracma trapz
+#' @export
+ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, alpha_level = 0.25, actuals = FALSE, smooth_method = NULL, smooth_span = NULL) {
+
+  if (!is.null(smooth_method) | !is.null(smooth_span))
+    warning("`smooth_method` and `smooth_span` are deprecated and ignored: ggcalibrate() no longer uses geom_smooth().", call. = FALSE)
+
+  df <- calibration_inputs(x1, x2, y)
+  df_calib <- calibration_curves(df, n_knots, ci_level)
+
+  # Plot
+  g <- ggplot(data = df_calib, aes(x=x,y=y, colour = Model )) +
+    scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) +
     scale_y_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) +
     geom_abline(slope = 1, intercept = 0, colour = "grey50", linetype = "dashed")  +
-    geom_smooth(method = smooth_method, span = smooth_span, se = TRUE, level = ci_level) +
+    geom_ribbon(aes(ymin = lci, ymax = uci, fill = Model), colour = NA, alpha = alpha_level) +
+    geom_line() +
     xlab("Predicted probability") +
     ylab("Actual probability") +
     coord_cartesian(xlim = c(0,1), ylim = c(0,1)) +
     NULL
-  
-  
+
+  if (actuals) {
+    g <- g +
+      geom_point(aes(y = Event), alpha = 0.25)
+  }
+
   return(g)
 }
+
+#' The Bland-Altman style Calibration plot
+#'
+#' ggcalibrate_BA plots the deviation of the actual event rate from the stats::predicted events (Actual - Prediction) against the prediction, similar to a Bland-Altman plot.
+#'
+#' Perfect calibration is the horizontal line at zero. A curve above the line means the model under-predicts the outcome, and a curve below it means the model over-predicts. The curves and confidence intervals are the same as in [ggcalibrate()], with the prediction subtracted. To focus on the region of interest (eg around a decision threshold), add `coord_cartesian(xlim = ...)` to the plot.
+#'
+#' @param x1 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the baseline model.  Must be between 0 & 1
+#' @param x2 Either a logistic regression fitted using glm (base package) or lrm (rms package) or calculated probabilities (eg through a logistic regression model) of the new (alternative) model.   Must be between 0 & 1
+#' @param y Binary of outcome of interest. Must be 0 or 1 (if fitted models are provided this is extracted from the fit which for an rms fit must have x = TRUE, y = TRUE).
+#' @param n_knots The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.
+#' @param ci_level Confidence interval of the curve (default = 0.95).
+#' @param alpha_level Transparency (alpha) of the shaded confidence interval (default = 0.25).
+#' @return a ggplot
+#' @seealso [ggcalibrate()]
+#' @examples
+#' # Quick example with subset of data
+#' data(data_risk)
+#' data_subset <- data_risk[1:100, ]  # Use first 100 rows for speed
+#' complete_cases <- complete.cases(data_subset)
+#' data_clean <- data_subset[complete_cases, ]
+#' y <- data_clean$outcome
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate_BA(x1, x2, y, n_knots = 3, ci_level = 0.95, alpha_level = 0.25)
+#'
+#' \donttest{
+#' # Full dataset example
+#' data(data_risk)
+#' complete_cases <- complete.cases(data_risk)
+#' data_clean <- data_risk[complete_cases, ]
+#' y <- data_clean$outcome
+#' x1 <- data_clean$baseline
+#' x2 <- data_clean$new
+#' output <- ggcalibrate_BA(x1, x2, y, n_knots = 5, ci_level = 0.95, alpha_level = 0.5)
+#'
+#' # Zoom in on predictions below 30%
+#' output + ggplot2::coord_cartesian(xlim = c(0, 0.3), ylim = c(-0.3, 0.3))
+#' }
+#' @import ggplot2
+#' @import dplyr
+#' @export
+ggcalibrate_BA <- function(x1, x2 = NULL, y = NULL, n_knots = 5, ci_level = 0.95, alpha_level = 0.25) {
+
+  df <- calibration_inputs(x1, x2, y)
+  df_deviation <- calibration_curves(df, n_knots, ci_level) |>
+    mutate(y = y - x, lci = lci - x, uci = uci - x)
+
+  # Plot
+  g <- ggplot(data = df_deviation, aes(x=x,y=y, colour = Model )) +
+    geom_hline(yintercept = 0, colour = "grey50", linetype = "dashed") +
+    geom_ribbon(aes(ymin = lci, ymax = uci, fill = Model), colour = NA, alpha = alpha_level) +
+    geom_line() +
+    scale_x_continuous(breaks = seq(0,1,0.1), expand = c(0.005,0.005)) +
+    scale_y_continuous(breaks = seq(-1,1,0.1)) +
+    coord_cartesian(xlim = c(0,1), ylim = c(-1,1)) +
+    ylab("Deviation from the outcome \n(Actual - Prediction)") +
+    xlab("Prediction") +
+    NULL
+
+  return(g)
+}
+
 
 
 #' The Original Calibration plot

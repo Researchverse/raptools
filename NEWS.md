@@ -1,3 +1,23 @@
+# raptools (development version)
+
+## New features
+
+* New `ggcalibrate_BA()`: a Bland-Altman style calibration plot showing the deviation of the actual event rate from the prediction (Actual - Prediction) against the prediction. Perfect calibration is the horizontal line at zero, which makes under- and over-prediction at clinically relevant thresholds easier to see (John Pickering).
+* `ggcalibrate()` gains `actuals`, to show the actual events (0 or 1) against the predictions, and `alpha_level`, to set the transparency of the confidence interval (John Pickering).
+
+## Improvements
+
+* `ggcalibrate()` now draws the confidence interval of the restricted cubic spline calibration curve itself, instead of a `geom_smooth()` fitted over the curve, which did not reflect the uncertainty in the calibration. The interval is calculated on the log-odds scale and back-transformed, so it stays between 0 and 1 (John Pickering).
+* `ggcalibrate()` now removes incomplete cases before fitting when two models are compared. Previously, missing values in either model or the outcome caused an error.
+
+## Deprecated
+
+* The `smooth_method` and `smooth_span` arguments of `ggcalibrate()` are no longer used. They are still accepted, with a warning, so existing code keeps working.
+
+## Documentation
+
+* Corrected the DOI for Pickering and Endre (2012) in the package description to <doi:10.2215/CJN.09590911>.
+
 # raptools 1.23.0
 
 ## Bug fixes and enhancements

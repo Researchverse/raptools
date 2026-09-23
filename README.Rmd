@@ -61,13 +61,18 @@ Version 1.22:
 * changed from  geom_line to the geom_step for the ROC plot (because it represents the data better).   
 * bug fix.  
 
-Version 1.23 (current):  
+Version 1.23:  
 * fixed `ggcalibrate_original()` default parameter error when `cut_type` not specified.
 * fixed `ggcalibrate()` axis labels (changed from "percentage" to "probability" to match 0-1 scale).
 * fixed critical bug in lrm() model handling that caused errors when using Frank Harrell's rms::lrm() models.
 * implemented missing `ci_level` parameter in `ggcalibrate()`.
 * added flexible smoothing controls (`show_smooth`, `smooth_method`, `smooth_span`, `smooth_se`) to plotting functions.
 * all changes maintain backward compatibility with sensible defaults.  
+
+Development version (to become 1.24):  
+* `ggcalibrate()` now shows the confidence interval of the calibration curve itself, rather than a smoothed band.
+* `ggcalibrate()` can show the actual events (`actuals = TRUE`) and the confidence interval shading can be set (`alpha_level`).
+* addition of `ggcalibrate_BA()`, a Bland-Altman style calibration plot.
 
 ## Example 1
 
@@ -116,6 +121,26 @@ ggrap(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ### The calibration curve
 ```{r ggcalibrate, warning = FALSE, message = FALSE}
 ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome)
+
+```
+
+The shaded areas are the 95% confidence intervals of each curve. To also show the actual events (0 or 1) against the predictions:
+```{r ggcalibrate_actuals, warning = FALSE, message = FALSE}
+ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome, actuals = TRUE)
+
+```
+
+### The Bland-Altman style calibration curve
+The same calibration curves, plotted as the deviation from the outcome (Actual - Prediction). Perfect calibration is the horizontal line at zero; above it the model under-predicts and below it the model over-predicts.
+```{r ggcalibrate_BA, warning = FALSE, message = FALSE}
+ggcalibrate_BA(x1 = baseline_risk, x2 = new_risk, y = outcome)
+
+```
+
+Zoom in on the predictions that matter, eg below 30%:
+```{r ggcalibrate_BA_zoom, warning = FALSE, message = FALSE}
+ggcalibrate_BA(x1 = baseline_risk, x2 = new_risk, y = outcome) +
+  ggplot2::coord_cartesian(xlim = c(0, 0.3), ylim = c(-0.3, 0.3))
 
 ```
 

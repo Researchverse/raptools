@@ -38,6 +38,7 @@ reference:
   - ggrap
   - ggdecision
   - ggcalibrate
+  - ggcalibrate_BA
   - ggroc
   - ggprerec
   - ggcontribute
