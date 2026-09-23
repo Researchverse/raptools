@@ -13,6 +13,7 @@ rap).
 You can install raptools from CRAN:
 
 ``` r
+
 install.packages("raptools")
 ```
 
@@ -20,6 +21,7 @@ Or install the development version from [GitHub](https://github.com/)
 with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("Researchverse/raptools")
 ```
@@ -94,6 +96,7 @@ This is a basic example for assessing the difference between two
 logistic regression models:
 
 ``` r
+
 library(dplyr)
 library(raptools)
 
@@ -198,6 +201,7 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 ### The Risk Assessment Plot
 
 ``` r
+
 ggrap(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
@@ -207,12 +211,14 @@ plot of chunk ggrap
 
 ``` r
 
+
 # for Single risks x2 = NULL
 ```
 
 ### The calibration curve
 
 ``` r
+
 ggcalibrate(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
@@ -223,6 +229,7 @@ plot of chunk ggcalibrate
 ### The original calibration curve
 
 ``` r
+
 ggcalibrate_original(x1 = baseline_risk, x2 = new_risk, y = outcome,  cut_type = "interval")
 #> $g
 ```
@@ -235,6 +242,7 @@ plot of chunk ggcalibrate_original
 ### The decision curve
 
 ``` r
+
 ggdecision(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
@@ -245,6 +253,7 @@ plot of chunk ggdecision
 ### The precision-recall curve
 
 ``` r
+
 ggprerec(x1 = baseline_risk, x2 = new_risk, y = outcome)
 ```
 
@@ -255,6 +264,7 @@ plot of chunk ggrerec
 ### The roc plot
 
 ``` r
+
 ggroc(x1 = baseline_risk, x2 = new_risk, y = outcome, carrington_line = TRUE)
 ```
 
@@ -271,6 +281,7 @@ those that are not.
 Thanks to Professor Frank Harrell for these plots.
 
 ``` r
+
 load("inst/extdata/fit_example")
 ggcontribute(x1 = eg_fit.glm)
 ```
@@ -286,6 +297,7 @@ This is a basic example for assessing the difference in the results of
 reclassification:
 
 ``` r
+
 ## basic example code
 
 baseline_class <- data_class$base_class

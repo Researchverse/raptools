@@ -2,6 +2,8 @@
 
 ## raptools 1.23.0
 
+CRAN release: 2025-12-09
+
 ### Bug fixes and enhancements
 
 - Fixed
