@@ -10,6 +10,8 @@ Primary functions for risk assessment and reclassification
   : The Decision curve
 - [`ggcalibrate()`](https://researchverse.github.io/raptools/reference/ggcalibrate.md)
   : The Calibration plot
+- [`ggcalibrate_BA()`](https://researchverse.github.io/raptools/reference/ggcalibrate_BA.md)
+  : The Bland-Altman style Calibration plot
 - [`ggroc()`](https://researchverse.github.io/raptools/reference/ggroc.md)
   : The ROC plot
 - [`ggprerec()`](https://researchverse.github.io/raptools/reference/ggprerec.md)

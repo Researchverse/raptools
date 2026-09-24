@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">raptools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.24.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,9 +28,33 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/Researchverse/raptools/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/Researchverse/raptools/blob/devel/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.24.0" id="raptools-1240">raptools 1.24.0<a class="anchor" aria-label="anchor" href="#raptools-1240"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-24-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0"></a></h3>
+<ul><li>New <code><a href="../reference/ggcalibrate_BA.html">ggcalibrate_BA()</a></code>: a Bland-Altman style calibration plot showing the deviation of the actual event rate from the prediction (Actual - Prediction) against the prediction. Perfect calibration is the horizontal line at zero, which makes under- and over-prediction at clinically relevant thresholds easier to see (John Pickering).</li>
+<li>
+<code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code> gains <code>actuals</code>, to show the actual events (0 or 1) against the predictions as rug-style marks, and <code>alpha_level</code>, to set the transparency of the confidence interval (John Pickering).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-1-24-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-1-24-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code> now draws the confidence interval of the restricted cubic spline calibration curve itself, instead of a <code>geom_smooth()</code> fitted over the curve, which did not reflect the uncertainty in the calibration. The interval is calculated on the log-odds scale and back-transformed, so it stays between 0 and 1 (John Pickering).</li>
+<li>
+<code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code> now removes incomplete cases before fitting when two models are compared. Previously, missing values in either model or the outcome caused an error.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="deprecated-1-24-0">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-1-24-0"></a></h3>
+<ul><li>The <code>smooth_method</code> and <code>smooth_span</code> arguments of <code><a href="../reference/ggcalibrate.html">ggcalibrate()</a></code> are no longer used. They are still accepted, with a warning, so existing code keeps working.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-24-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-24-0"></a></h3>
+<ul><li>Corrected the DOI for Pickering and Endre (2012) in the package description to <a href="doi:10.2215/CJN.09590911" class="uri">doi:10.2215/CJN.09590911</a>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.23.0" id="raptools-1230">raptools 1.23.0<a class="anchor" aria-label="anchor" href="#raptools-1230"></a></h2><p class="text-muted">CRAN release: 2025-12-09</p>
 <div class="section level3">

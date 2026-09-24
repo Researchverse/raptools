@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="index.html">raptools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.23.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.24.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
 <div class="section level2">
 <h2 id="history-and-versions">History and versions<a class="anchor" aria-label="anchor" href="#history-and-versions"></a>
 </h2>
-<p>raptools began as Matlab code in 2012 after I wrote a paper (<a href="https://cjasn.asnjournals.org/content/7/8/1355" target="_blank" class="external-link">1</a>) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper. Dr David Cairns kindly provided some R code for the Risk Assessment Plot. This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I’ve come to consider some metrics as not helpful. So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied. In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics. These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI). Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.</p>
+<p>raptools began as Matlab code in 2012 after I wrote a paper (<a href="https://doi.org/10.2215/CJN.09590911" target="_blank" class="external-link">1</a>) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper. Dr David Cairns kindly provided some R code for the Risk Assessment Plot. This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I’ve come to consider some metrics as not helpful. So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied. In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics. These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI). Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.</p>
 <p>Version 1.03 were major changes:<br>
 * allowed as input logistic regression models from glm (stats) and lrm (rms) as well as risk predictions calculated elsewhere. * provided as outputs in addition to the Risk Assessment Plot, a form of calibration plot and decision curve.<br>
 * the output from the main functions CI.raplot, and CI.classNRI are now lists that include the metrics for each bootstrap sample as well as the summary metrics. CI.classNRI also produces confusion matrices for those with and without the event of interest (separately). Bootstrapping is used to determine confidence intervals.</p>
@@ -91,8 +91,10 @@
 <p>Version 1.22:<br>
 * addition of ggcontribute graph. * changed from geom_line to the geom_step for the ROC plot (because it represents the data better).<br>
 * bug fix.</p>
-<p>Version 1.23 (current):<br>
+<p>Version 1.23:<br>
 * fixed <code><a href="reference/ggcalibrate_original.html">ggcalibrate_original()</a></code> default parameter error when <code>cut_type</code> not specified. * fixed <code><a href="reference/ggcalibrate.html">ggcalibrate()</a></code> axis labels (changed from “percentage” to “probability” to match 0-1 scale). * fixed critical bug in lrm() model handling that caused errors when using Frank Harrell’s rms::lrm() models. * implemented missing <code>ci_level</code> parameter in <code><a href="reference/ggcalibrate.html">ggcalibrate()</a></code>. * added flexible smoothing controls (<code>show_smooth</code>, <code>smooth_method</code>, <code>smooth_span</code>, <code>smooth_se</code>) to plotting functions. * all changes maintain backward compatibility with sensible defaults.</p>
+<p>Version 1.24 (current):<br>
+* <code><a href="reference/ggcalibrate.html">ggcalibrate()</a></code> now shows the confidence interval of the calibration curve itself, rather than a smoothed band. * <code><a href="reference/ggcalibrate.html">ggcalibrate()</a></code> can show the actual events (<code>actuals = TRUE</code>) and the confidence interval shading can be set (<code>alpha_level</code>). * addition of <code><a href="reference/ggcalibrate_BA.html">ggcalibrate_BA()</a></code>, a Bland-Altman style calibration plot.</p>
 </div>
 <div class="section level2">
 <h2 id="example-1">Example 1<a class="anchor" aria-label="anchor" href="#example-1"></a>
@@ -177,25 +179,25 @@
 <span></span>
 <span><span class="co">## bootstrap derived metrics with confidence intervals  </span></span>
 <span><span class="op">(</span><span class="va">assessment</span><span class="op">$</span><span class="va">Summary_metrics</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 16 × 2</span></span>
-<span><span class="co">#&gt;    metric         statistics                  </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;                       </span></span>
-<span><span class="co">#&gt;  1 n              433 (CI: 433 to 433)        </span></span>
-<span><span class="co">#&gt;  2 n_event        85.5 (CI: 67.38 to 95.53)   </span></span>
-<span><span class="co">#&gt;  3 n_non_event    347.5 (CI: 337.48 to 365.62)</span></span>
-<span><span class="co">#&gt;  4 Prevalence     0.2 (CI: 0.16 to 0.22)      </span></span>
-<span><span class="co">#&gt;  5 IDI_event      0.14 (CI: 0.11 to 0.19)     </span></span>
-<span><span class="co">#&gt;  6 IDI_nonevent   0.03 (CI: 0.02 to 0.04)     </span></span>
-<span><span class="co">#&gt;  7 IP_baseline    0.19 (CI: 0.18 to 0.2)      </span></span>
-<span><span class="co">#&gt;  8 IS_baseline    0.25 (CI: 0.24 to 0.27)     </span></span>
-<span><span class="co">#&gt;  9 IP_new         0.15 (CI: 0.14 to 0.17)     </span></span>
-<span><span class="co">#&gt; 10 IS_new         0.39 (CI: 0.36 to 0.45)     </span></span>
-<span><span class="co">#&gt; 11 Brier_baseline 0.15 (CI: 0.12 to 0.16)     </span></span>
-<span><span class="co">#&gt; 12 Brier_new      0.12 (CI: 0.1 to 0.14)      </span></span>
-<span><span class="co">#&gt; 13 Brier_skill    16.05 (CI: 9.17 to 26.4)    </span></span>
-<span><span class="co">#&gt; 14 AUC_baseline   0.69 (CI: 0.64 to 0.74)     </span></span>
-<span><span class="co">#&gt; 15 AUC_new        0.82 (CI: 0.78 to 0.88)     </span></span>
-<span><span class="co">#&gt; 16 AUC_difference 0.13 (CI: 0.1 to 0.19)</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 16 x 2</span></span>
+<span><span class="co">#&gt;    metric         statistics                </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;                     </span></span>
+<span><span class="co">#&gt;  1 n              433 (CI: 433 to 433)      </span></span>
+<span><span class="co">#&gt;  2 n_event        86 (CI: 67.75 to 96.57)   </span></span>
+<span><span class="co">#&gt;  3 n_non_event    347 (CI: 336.42 to 365.25)</span></span>
+<span><span class="co">#&gt;  4 Prevalence     0.2 (CI: 0.16 to 0.22)    </span></span>
+<span><span class="co">#&gt;  5 IDI_event      0.14 (CI: 0.1 to 0.17)    </span></span>
+<span><span class="co">#&gt;  6 IDI_nonevent   0.03 (CI: 0.02 to 0.05)   </span></span>
+<span><span class="co">#&gt;  7 IP_baseline    0.18 (CI: 0.18 to 0.19)   </span></span>
+<span><span class="co">#&gt;  8 IS_baseline    0.26 (CI: 0.23 to 0.28)   </span></span>
+<span><span class="co">#&gt;  9 IP_new         0.15 (CI: 0.14 to 0.16)   </span></span>
+<span><span class="co">#&gt; 10 IS_new         0.39 (CI: 0.35 to 0.42)   </span></span>
+<span><span class="co">#&gt; 11 Brier_baseline 0.15 (CI: 0.12 to 0.16)   </span></span>
+<span><span class="co">#&gt; 12 Brier_new      0.12 (CI: 0.1 to 0.14)    </span></span>
+<span><span class="co">#&gt; 13 Brier_skill    16.91 (CI: 9.62 to 23.86) </span></span>
+<span><span class="co">#&gt; 14 AUC_baseline   0.7 (CI: 0.65 to 0.75)    </span></span>
+<span><span class="co">#&gt; 15 AUC_new        0.82 (CI: 0.78 to 0.86)   </span></span>
+<span><span class="co">#&gt; 16 AUC_difference 0.14 (CI: 0.08 to 0.17)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="graphical-assessments">Graphical assessments<a class="anchor" aria-label="anchor" href="#graphical-assessments"></a>
@@ -224,11 +226,40 @@ plot of chunk ggrap
 plot of chunk ggcalibrate
 </p>
 </div>
+<p>The shaded areas are the 95% confidence intervals of each curve. To also show the actual events (0 or 1) against the predictions:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ggcalibrate.html">ggcalibrate</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span>, actuals <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="reference/figures/README-ggcalibrate_actuals-1.png" alt="plot of chunk ggcalibrate_actuals" width="100%"><p class="caption">
+plot of chunk ggcalibrate_actuals
+</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="the-bland-altman-style-calibration-curve">The Bland-Altman style calibration curve<a class="anchor" aria-label="anchor" href="#the-bland-altman-style-calibration-curve"></a>
+</h3>
+<p>The same calibration curves, plotted as the deviation from the outcome (Actual - Prediction). Perfect calibration is the horizontal line at zero; above it the model under-predicts and below it the model over-predicts.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ggcalibrate_BA.html">ggcalibrate_BA</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="reference/figures/README-ggcalibrate_BA-1.png" alt="plot of chunk ggcalibrate_BA" width="100%"><p class="caption">
+plot of chunk ggcalibrate_BA
+</p>
+</div>
+<p>Zoom in on the predictions that matter, eg below 30%:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ggcalibrate_BA.html">ggcalibrate_BA</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="reference/figures/README-ggcalibrate_BA_zoom-1.png" alt="plot of chunk ggcalibrate_BA_zoom" width="100%"><p class="caption">
+plot of chunk ggcalibrate_BA_zoom
+</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="the-original-calibration-curve">The original calibration curve<a class="anchor" aria-label="anchor" href="#the-original-calibration-curve"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ggcalibrate_original.html">ggcalibrate_original</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span>,  cut_type <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $g</span></span></code></pre></div>
 <div class="figure">
@@ -240,7 +271,7 @@ plot of chunk ggcalibrate_original
 <div class="section level3">
 <h3 id="the-decision-curve">The decision curve<a class="anchor" aria-label="anchor" href="#the-decision-curve"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ggdecision.html">ggdecision</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="reference/figures/README-ggdecision-1.png" alt="plot of chunk ggdecision" width="100%"><p class="caption">
@@ -251,7 +282,7 @@ plot of chunk ggdecision
 <div class="section level3">
 <h3 id="the-precision-recall-curve">The precision-recall curve<a class="anchor" aria-label="anchor" href="#the-precision-recall-curve"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ggprerec.html">ggprerec</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="reference/figures/README-ggrerec-1.png" alt="plot of chunk ggrerec" width="100%"><p class="caption">
@@ -262,7 +293,7 @@ plot of chunk ggrerec
 <div class="section level3">
 <h3 id="the-roc-plot">The roc plot<a class="anchor" aria-label="anchor" href="#the-roc-plot"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ggroc.html">ggroc</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">baseline_risk</span>, x2 <span class="op">=</span> <span class="va">new_risk</span>, y <span class="op">=</span> <span class="va">outcome</span>, carrington_line <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="reference/figures/README-ggroc-1.png" alt="plot of chunk ggroc" width="100%"><p class="caption">
@@ -275,7 +306,7 @@ plot of chunk ggroc
 <h3 id="the-contribution-plot">The contribution plot<a class="anchor" aria-label="anchor" href="#the-contribution-plot"></a>
 </h3>
 <p>Thanks to Professor Frank Harrell for these plots.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"inst/extdata/fit_example"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ggcontribute.html">ggcontribute</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">eg_fit.glm</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -289,7 +320,7 @@ plot of chunk ggcontribute
 <h2 id="example-2">Example 2<a class="anchor" aria-label="anchor" href="#example-2"></a>
 </h2>
 <p>This is a basic example for assessing the difference in the results of reclassification:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## basic example code</span></span>
 <span></span>
 <span><span class="va">baseline_class</span> <span class="op">&lt;-</span> <span class="va">data_class</span><span class="op">$</span><span class="va">base_class</span></span>
@@ -365,19 +396,19 @@ plot of chunk ggcontribute
 <span></span>
 <span><span class="co">## bootstrap derived metrics with confidence intervals  </span></span>
 <span><span class="op">(</span><span class="va">class_assessment</span><span class="op">$</span><span class="va">Summary_metrics</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 10 × 2</span></span>
+<span><span class="co">#&gt; # A tibble: 10 x 2</span></span>
 <span><span class="co">#&gt;    metric            statistics               </span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;                    </span></span>
 <span><span class="co">#&gt;  1 n                 444 (CI: 444 to 444)     </span></span>
-<span><span class="co">#&gt;  2 n_event           61 (CI: 50.9 to 73)      </span></span>
-<span><span class="co">#&gt;  3 n_non_event       383 (CI: 371 to 393.1)   </span></span>
-<span><span class="co">#&gt;  4 Prevalence        0.14 (CI: 0.11 to 0.16)  </span></span>
-<span><span class="co">#&gt;  5 NRI_up_event      19 (CI: 10.48 to 27.05)  </span></span>
-<span><span class="co">#&gt;  6 NRI_up_nonevent   94 (CI: 78.7 to 108.57)  </span></span>
-<span><span class="co">#&gt;  7 NRI_down_event    5.5 (CI: 1.95 to 9.57)   </span></span>
-<span><span class="co">#&gt;  8 NRI_down_nonevent 70.5 (CI: 61.9 to 87.67) </span></span>
-<span><span class="co">#&gt;  9 NRI_event         0.22 (CI: 0.1 to 0.46)   </span></span>
-<span><span class="co">#&gt; 10 NRI_nonevent      -0.05 (CI: -0.12 to 0.01)</span></span></code></pre></div>
+<span><span class="co">#&gt;  2 n_event           60 (CI: 52.95 to 71.1)   </span></span>
+<span><span class="co">#&gt;  3 n_non_event       384 (CI: 372.9 to 391.05)</span></span>
+<span><span class="co">#&gt;  4 Prevalence        0.14 (CI: 0.12 to 0.16)  </span></span>
+<span><span class="co">#&gt;  5 NRI_up_event      21.5 (CI: 15.48 to 27.05)</span></span>
+<span><span class="co">#&gt;  6 NRI_up_nonevent   93.5 (CI: 81 to 103.53)  </span></span>
+<span><span class="co">#&gt;  7 NRI_down_event    5 (CI: 1.48 to 8)        </span></span>
+<span><span class="co">#&gt;  8 NRI_down_nonevent 74.5 (CI: 58.9 to 83.1)  </span></span>
+<span><span class="co">#&gt;  9 NRI_event         0.27 (CI: 0.16 to 0.36)  </span></span>
+<span><span class="co">#&gt; 10 NRI_nonevent      -0.05 (CI: -0.1 to 0)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

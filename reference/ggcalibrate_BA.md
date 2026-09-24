@@ -1,21 +1,19 @@
-# The Calibration plot
+# The Bland-Altman style Calibration plot
 
-ggcalibrate plots the stats::predicted events against the actual event
-rate
+ggcalibrate_BA plots the deviation of the actual event rate from the
+stats::predicted events (Actual - Prediction) against the prediction,
+similar to a Bland-Altman plot.
 
 ## Usage
 
 ``` r
-ggcalibrate(
+ggcalibrate_BA(
   x1,
   x2 = NULL,
   y = NULL,
   n_knots = 5,
   ci_level = 0.95,
-  alpha_level = 0.25,
-  actuals = FALSE,
-  smooth_method = NULL,
-  smooth_span = NULL
+  alpha_level = 0.25
 )
 ```
 
@@ -54,37 +52,22 @@ ggcalibrate(
   Transparency (alpha) of the shaded confidence interval (default =
   0.25).
 
-- actuals:
-
-  Logical, whether to also plot the actual events (0 or 1) against the
-  predictions as short vertical marks, like a rug plot, at 0 and 1
-  (default = FALSE).
-
-- smooth_method:
-
-  Deprecated and ignored. The curves are no longer drawn with
-  geom_smooth().
-
-- smooth_span:
-
-  Deprecated and ignored. The curves are no longer drawn with
-  geom_smooth().
-
 ## Value
 
 a ggplot
 
 ## Details
 
-The calibration curve for each model is a logistic regression of the
-outcome on a restricted cubic spline of the predicted probability. The
-confidence interval is calculated from the standard error of that fit on
-the log-odds scale and back-transformed, so it is bounded by 0 and 1.
+Perfect calibration is the horizontal line at zero. A curve above the
+line means the model under-predicts the outcome, and a curve below it
+means the model over-predicts. The curves and confidence intervals are
+the same as in \[ggcalibrate()\], with the prediction subtracted. To
+focus on the region of interest (eg around a decision threshold), add
+\`coord_cartesian(xlim = ...)\` to the plot.
 
 ## See also
 
-\[ggcalibrate_BA()\] for the same curves plotted as deviations from
-perfect calibration.
+\[ggcalibrate()\]
 
 ## Examples
 
@@ -97,7 +80,7 @@ data_clean <- data_subset[complete_cases, ]
 y <- data_clean$outcome
 x1 <- data_clean$baseline
 x2 <- data_clean$new
-output <- ggcalibrate(x1, x2, y, n_knots = 3, ci_level = 0.95)
+output <- ggcalibrate_BA(x1, x2, y, n_knots = 3, ci_level = 0.95, alpha_level = 0.25)
 
 # \donttest{
 # Full dataset example
@@ -107,9 +90,12 @@ data_clean <- data_risk[complete_cases, ]
 y <- data_clean$outcome
 x1 <- data_clean$baseline
 x2 <- data_clean$new
-output <- ggcalibrate(x1, x2, y, n_knots = 5, ci_level = 0.95)
+output <- ggcalibrate_BA(x1, x2, y, n_knots = 5, ci_level = 0.95, alpha_level = 0.5)
 
-# Show the actual events and a darker confidence interval
-output <- ggcalibrate(x1, x2, y, alpha_level = 0.5, actuals = TRUE)
+# Zoom in on predictions below 30%
+output + ggplot2::coord_cartesian(xlim = c(0, 0.3), ylim = c(-0.3, 0.3))
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+
 # }
 ```
