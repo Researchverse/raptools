@@ -1,4 +1,4 @@
-# raptools (development version)
+# raptools 1.24.0
 
 ## New features
 

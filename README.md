@@ -31,7 +31,7 @@ devtools::install_github("Researchverse/raptools")
 
 ## History and versions
 
-raptools began as Matlab code in 2012 after I wrote a paper ([1](https://cjasn.asnjournals.org/content/7/8/1355){target="_blank"}) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper.  Dr David Cairns kindly provided some R code for the Risk Assessment Plot.  This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I've come to consider some metrics as not helpful.  So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied.  In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics.  These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI).  Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.  
+raptools began as Matlab code in 2012 after I wrote a paper ([1](https://doi.org/10.2215/CJN.09590911){target="_blank"}) for the Nephrology community on assessing the added value of one biomarker to a clinical prediction model. I worked with Professor Zoltan Endre on that paper.  Dr David Cairns kindly provided some R code for the Risk Assessment Plot.  This formed the basis of versions 0.1 to 0.4. Importantly, for those versions and the current version all errors are mine (sorry) and not those of Professor Endre or Dr Cairns. Since writing that paper I've come to consider some metrics as not helpful.  So, for the current version I have dropped some statistical metrics that I believe are poor or wrongly applied.  In particularly, I dropped providing the total NRI (Net Reclassification Improvement) and total IDI (Integrated Discrimination Improvement) metrics.  These should never be presented because they inappropriately add together two fractions with differing denominators (NRI) or two means (IDI).  Instead, these the NRIs and IDIs for those with and without the event of interest should be provided. Third, I have provided the change in AUCs rather than a p-value because the change is much more meaningful.  
 
 Version 1.03 were major changes:  
 * allowed as input logistic regression models from glm (stats) and lrm (rms) as well as risk predictions calculated elsewhere.
@@ -62,7 +62,7 @@ Version 1.23:
 * added flexible smoothing controls (`show_smooth`, `smooth_method`, `smooth_span`, `smooth_se`) to plotting functions.
 * all changes maintain backward compatibility with sensible defaults.  
 
-Development version (to become 1.24):  
+Version 1.24 (current):  
 * `ggcalibrate()` now shows the confidence interval of the calibration curve itself, rather than a smoothed band.
 * `ggcalibrate()` can show the actual events (`actuals = TRUE`) and the confidence interval shading can be set (`alpha_level`).
 * addition of `ggcalibrate_BA()`, a Bland-Altman style calibration plot.
@@ -155,21 +155,21 @@ assessment <- CI.raplot(x1 = baseline_risk, x2 = new_risk, y = outcome,
 #>    metric         statistics                
 #>    <chr>          <chr>                     
 #>  1 n              433 (CI: 433 to 433)      
-#>  2 n_event        87.5 (CI: 71 to 100.67)   
-#>  3 n_non_event    345.5 (CI: 332.33 to 362) 
-#>  4 Prevalence     0.2 (CI: 0.16 to 0.23)    
-#>  5 IDI_event      0.14 (CI: 0.11 to 0.16)   
+#>  2 n_event        86 (CI: 67.75 to 96.57)   
+#>  3 n_non_event    347 (CI: 336.42 to 365.25)
+#>  4 Prevalence     0.2 (CI: 0.16 to 0.22)    
+#>  5 IDI_event      0.14 (CI: 0.1 to 0.17)    
 #>  6 IDI_nonevent   0.03 (CI: 0.02 to 0.05)   
-#>  7 IP_baseline    0.19 (CI: 0.17 to 0.19)   
-#>  8 IS_baseline    0.25 (CI: 0.24 to 0.26)   
-#>  9 IP_new         0.15 (CI: 0.13 to 0.17)   
+#>  7 IP_baseline    0.18 (CI: 0.18 to 0.19)   
+#>  8 IS_baseline    0.26 (CI: 0.23 to 0.28)   
+#>  9 IP_new         0.15 (CI: 0.14 to 0.16)   
 #> 10 IS_new         0.39 (CI: 0.35 to 0.42)   
-#> 11 Brier_baseline 0.16 (CI: 0.13 to 0.17)   
-#> 12 Brier_new      0.13 (CI: 0.11 to 0.14)   
-#> 13 Brier_skill    16.69 (CI: 10.65 to 25.38)
-#> 14 AUC_baseline   0.68 (CI: 0.63 to 0.71)   
+#> 11 Brier_baseline 0.15 (CI: 0.12 to 0.16)   
+#> 12 Brier_new      0.12 (CI: 0.1 to 0.14)    
+#> 13 Brier_skill    16.91 (CI: 9.62 to 23.86) 
+#> 14 AUC_baseline   0.7 (CI: 0.65 to 0.75)    
 #> 15 AUC_new        0.82 (CI: 0.78 to 0.86)   
-#> 16 AUC_difference 0.14 (CI: 0.1 to 0.17)
+#> 16 AUC_difference 0.14 (CI: 0.08 to 0.17)
 ```
 
 ## Graphical assessments
@@ -380,18 +380,18 @@ class_assessment <- CI.classNRI(c1 = baseline_class, c2 = new_class, y = outcome
 ## bootstrap derived metrics with confidence intervals  
 (class_assessment$Summary_metrics)
 #> # A tibble: 10 x 2
-#>    metric            statistics                
-#>    <chr>             <chr>                     
-#>  1 n                 444 (CI: 444 to 444)      
-#>  2 n_event           61 (CI: 47.33 to 75.62)   
-#>  3 n_non_event       383 (CI: 368.38 to 396.67)
-#>  4 Prevalence        0.14 (CI: 0.11 to 0.17)   
-#>  5 NRI_up_event      19 (CI: 13.48 to 28.52)   
-#>  6 NRI_up_nonevent   94 (CI: 77.28 to 115.35)  
-#>  7 NRI_down_event    4.5 (CI: 1 to 8.52)       
-#>  8 NRI_down_nonevent 69.5 (CI: 58.75 to 82.57) 
-#>  9 NRI_event         0.26 (CI: 0.14 to 0.42)   
-#> 10 NRI_nonevent      -0.06 (CI: -0.14 to -0.01)
+#>    metric            statistics               
+#>    <chr>             <chr>                    
+#>  1 n                 444 (CI: 444 to 444)     
+#>  2 n_event           60 (CI: 52.95 to 71.1)   
+#>  3 n_non_event       384 (CI: 372.9 to 391.05)
+#>  4 Prevalence        0.14 (CI: 0.12 to 0.16)  
+#>  5 NRI_up_event      21.5 (CI: 15.48 to 27.05)
+#>  6 NRI_up_nonevent   93.5 (CI: 81 to 103.53)  
+#>  7 NRI_down_event    5 (CI: 1.48 to 8)        
+#>  8 NRI_down_nonevent 74.5 (CI: 58.9 to 83.1)  
+#>  9 NRI_event         0.27 (CI: 0.16 to 0.36)  
+#> 10 NRI_nonevent      -0.05 (CI: -0.1 to 0)
 ```
 
 
