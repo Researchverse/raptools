@@ -744,7 +744,7 @@ calibration_curves <- function(df, n_knots, ci_level) {
 #' @param n_knots The curves are made by fitting a restricted cubic spline (rms package). The default 5-knots is usually enough.
 #' @param ci_level Confidence interval of the curve (default = 0.95).
 #' @param alpha_level Transparency (alpha) of the shaded confidence interval (default = 0.25).
-#' @param actuals Logical, whether to also plot the actual events (0 or 1) against the predictions (default = FALSE).
+#' @param actuals Logical, whether to also plot the actual events (0 or 1) against the predictions as short vertical marks, like a rug plot, at 0 and 1 (default = FALSE).
 #' @param smooth_method Deprecated and ignored. The curves are no longer drawn with geom_smooth().
 #' @param smooth_span Deprecated and ignored. The curves are no longer drawn with geom_smooth().
 #' @return a ggplot
@@ -801,7 +801,7 @@ ggcalibrate <- function(x1, x2 = NULL, y = NULL,  n_knots = 5, ci_level = 0.95, 
 
   if (actuals) {
     g <- g +
-      geom_point(aes(y = Event), alpha = 0.25)
+      geom_point(aes(y = Event), shape = "I", alpha = 0.5)
   }
 
   return(g)

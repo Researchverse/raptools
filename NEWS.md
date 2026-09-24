@@ -3,7 +3,7 @@
 ## New features
 
 * New `ggcalibrate_BA()`: a Bland-Altman style calibration plot showing the deviation of the actual event rate from the prediction (Actual - Prediction) against the prediction. Perfect calibration is the horizontal line at zero, which makes under- and over-prediction at clinically relevant thresholds easier to see (John Pickering).
-* `ggcalibrate()` gains `actuals`, to show the actual events (0 or 1) against the predictions, and `alpha_level`, to set the transparency of the confidence interval (John Pickering).
+* `ggcalibrate()` gains `actuals`, to show the actual events (0 or 1) against the predictions as rug-style marks, and `alpha_level`, to set the transparency of the confidence interval (John Pickering).
 
 ## Improvements
 

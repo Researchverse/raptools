@@ -29,7 +29,7 @@ ggcalibrate(
 
 \item{alpha_level}{Transparency (alpha) of the shaded confidence interval (default = 0.25).}
 
-\item{actuals}{Logical, whether to also plot the actual events (0 or 1) against the predictions (default = FALSE).}
+\item{actuals}{Logical, whether to also plot the actual events (0 or 1) against the predictions as short vertical marks, like a rug plot, at 0 and 1 (default = FALSE).}
 
 \item{smooth_method}{Deprecated and ignored. The curves are no longer drawn with geom_smooth().}
 
